@@ -1,12 +1,8 @@
-// Returns true if the index is an accessible list item.
-//
-// If includeLength is true, will also return true if the
-// index is equal to the length.
-export function withinRange(array, index, includeLength = false) {
-	return (
-		(index >= 0 && index < array.length) || //
-		(includeLength && index === array.length)
-	) //
+// Return the second from last item. Null if no such
+// item.
+export function beforeLast(array) {
+	const i = beforeLastIndex(array)
+	return i < 0 ? null : array[i]
 }
 
 // Return the index of the item second from last. The
@@ -16,38 +12,20 @@ export function beforeLastIndex(array) {
 	return array.length - 2
 }
 
-// Return the second from last item. Null if no such
-// item.
-export function beforeLast(array) {
-	const i = beforeLastIndex(array)
-	return i < 0 ? null : array[i]
+// Iterates the list calling all callable items with
+// the passed arguments. Callable items are those that
+// return true for `typeof item === 'function'`.
+export function callAll(array, ...args) {
+	array.forEach((item) => {
+		if (typeof item === 'function') {
+			item(...args)
+		}
+	})
 }
 
-// Return the index of the last item. The number will be
-// negative if list is empty.
-export function lastIndex(array) {
-	return array.length - 1
-}
-
-// Return the last item. Null if no such item.
-export function last(array) {
-	const i = lastIndex(array)
-	return i < 0 ? null : array[i]
-}
-
-// Return the item before the reference item. Null if no
-// such item.
-export function itemBefore(array, refItem) {
-	const i = array.indexOf(refItem)
-	return i <= 0 ? null : array[i - 1]
-}
-
-// Return the item after the reference item. Null if no
-// such item.
-export function itemAfter(array, refItem) {
-	const i = array.indexOf(refItem)
-	const lastIdx = lastIndex(array)
-	return i < 0 || i >= lastIdx ? null : array[i + 1]
+// Remove all items.
+export function clear(array) {
+	array.splice(0)
 }
 
 // Insert an item at the index location.
@@ -59,6 +37,18 @@ export function insert(array, index, item) {
 	}
 
 	array.splice(index, 0, item)
+}
+
+// Insert an item after another item. If the reference
+// item doesn't exist an exception is thrown.
+export function insertAfter(array, refItem, item) {
+	const i = array.indexOf(refItem)
+
+	if (i < 0) {
+		throw new Error("Reference item doesn't exist")
+	}
+
+	array.splice(i + 1, 0, item)
 }
 
 // Insert an item before another item. If the reference
@@ -73,16 +63,40 @@ export function insertBefore(array, refItem, item) {
 	array.splice(i, 0, item)
 }
 
-// Insert an item after another item. If the reference
-// item doesn't exist an exception is thrown.
-export function insertAfter(array, refItem, item) {
+// Return the item after the reference item. Null if no
+// such item.
+export function itemAfter(array, refItem) {
 	const i = array.indexOf(refItem)
+	const lastIdx = lastIndex(array)
+	return i < 0 || i >= lastIdx ? null : array[i + 1]
+}
 
-	if (i < 0) {
-		throw new Error("Reference item doesn't exist")
+// Return the item before the reference item. Null if no
+// such item.
+export function itemBefore(array, refItem) {
+	const i = array.indexOf(refItem)
+	return i <= 0 ? null : array[i - 1]
+}
+
+// Return the last item. Null if no such item.
+export function last(array) {
+	const i = lastIndex(array)
+	return i < 0 ? null : array[i]
+}
+
+// Return the index of the last item. The number will be
+// negative if list is empty.
+export function lastIndex(array) {
+	return array.length - 1
+}
+
+// Find and remove the item if it exists.
+export function remove(array, item) {
+	const i = array.indexOf(item)
+
+	if (i > -1) {
+		array.splice(i, 1)
 	}
-
-	array.splice(i + 1, 0, item)
 }
 
 // Replace an existing item with a new item. If the
@@ -99,45 +113,30 @@ export function replace(array, currentItem, newItem) {
 	array.splice(i, 1, newItem)
 }
 
-// Find and remove the item if it exists.
-export function remove(array, item) {
-	const i = array.indexOf(item)
-
-	if (i > -1) {
-		array.splice(i, 1)
-	}
+// Returns true if the index is an accessible list item.
+//
+// If includeLength is true, will also return true if the
+// index is equal to the length.
+export function withinRange(array, index, includeLength = false) {
+	return (
+		(index >= 0 && index < array.length) || //
+		(includeLength && index === array.length)
+	) //
 }
 
-// Remove all items.
-export function clear(array) {
-	array.splice(0)
-}
-
-// Iterates the list calling all callable items with
-// the passed arguments. Callable items are those that
-// return true for `typeof item === 'function'`.
-export function callAll(array, ...args) {
-	array.forEach((item) => {
-		if (typeof item === 'function') {
-			item(...args)
-		}
-	})
-}
-
-// Utility functions for dealing with arrays.
 export default {
-	withinRange, //
+	beforeLast, //
 	beforeLastIndex,
-	beforeLast,
-	lastIndex,
-	last,
-	itemBefore,
-	itemAfter,
-	insert,
-	insertBefore,
-	insertAfter,
-	replace,
-	remove,
-	clear,
 	callAll,
+	clear,
+	insert,
+	insertAfter,
+	insertBefore,
+	itemAfter,
+	itemBefore,
+	last,
+	lastIndex,
+	remove,
+	replace,
+	withinRange,
 }

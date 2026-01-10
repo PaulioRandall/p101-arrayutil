@@ -1,18 +1,18 @@
 import {
-	withinRange, //
+	beforeLast, //
 	beforeLastIndex,
-	beforeLast,
-	lastIndex,
-	last,
-	itemBefore,
-	itemAfter,
-	insert,
-	insertBefore,
-	insertAfter,
-	replace,
-	remove,
-	clear,
 	callAll,
+	clear,
+	insert,
+	insertAfter,
+	insertBefore,
+	itemAfter,
+	itemBefore,
+	last,
+	lastIndex,
+	remove,
+	replace,
+	withinRange,
 } from './ArrayUtil.js'
 
 const A = 'A'
@@ -20,153 +20,160 @@ const B = 'B'
 const C = 'C'
 const D = 'D'
 
-describe('js', () => {
-	test('withinRange() with length excluded', () => {
-		const f = (i) => withinRange([A, B, C], i)
+test('beforeLast() returns null for list with 1 item', () => {
+	const exp = beforeLast([A])
+	expect(exp).toEqual(null)
+})
 
-		expect(f(-1)).toEqual(false)
-		expect(f(0)).toEqual(true)
-		expect(f(1)).toEqual(true)
-		expect(f(2)).toEqual(true)
-		expect(f(3)).toEqual(false)
-	})
+test('beforeLast() returns correct item', () => {
+	const exp = beforeLast([A, B, C])
+	expect(exp).toEqual(B)
+})
 
-	test('withinRange() with length included', () => {
-		const f = (i) => withinRange([A, B, C], i, true)
+test('beforeLastIndex() returns -1 for list with 1 item', () => {
+	const exp = beforeLastIndex([A])
+	expect(exp).toEqual(-1)
+})
 
-		expect(f(-1)).toEqual(false)
-		expect(f(0)).toEqual(true)
-		expect(f(1)).toEqual(true)
-		expect(f(2)).toEqual(true)
-		expect(f(3)).toEqual(true)
-		expect(f(4)).toEqual(false)
-	})
+test('beforeLastIndex() returns 2 for list with 4 items', () => {
+	const exp = beforeLastIndex([A, B, C, D])
+	expect(exp).toEqual(2)
+})
 
-	test('beforeLast() returns null for list with 1 item', () => {
-		const exp = beforeLast([A])
-		expect(exp).toEqual(null)
-	})
+test('callAll() calls all functions', () => {
+	const called = []
+	const calledWith = []
 
-	test('beforeLast() returns correct item', () => {
-		const exp = beforeLast([A, B, C])
-		expect(exp).toEqual(B)
-	})
+	const fA = (...args) => {
+		called.push(A)
+		calledWith.push(args)
+	}
 
-	test('last() returns null for empty list', () => {
-		const exp = last([])
-		expect(exp).toEqual(null)
-	})
+	const fB = (...args) => {
+		called.push(B)
+		calledWith.push(args)
+	}
 
-	test('last() returns correct item', () => {
-		const exp = last([A, B, C])
-		expect(exp).toEqual(C)
-	})
+	const list = [fA, C, fB, D]
+	callAll(list, 'rum', 'whiskey')
 
-	test('itemBefore()', () => {
-		const list = [A, B, C]
-		expect(itemBefore(list, A)).toEqual(null)
-		expect(itemBefore(list, B)).toEqual(A)
-		expect(itemBefore(list, C)).toEqual(B)
-		expect(itemBefore(list, D)).toEqual(null)
-	})
+	expect(called).toEqual([A, B])
+	expect(calledWith).toEqual([
+		['rum', 'whiskey'],
+		['rum', 'whiskey'],
+	])
+})
 
-	test('itemAfter()', () => {
-		const list = [A, B, C]
-		expect(itemAfter(list, A)).toEqual(B)
-		expect(itemAfter(list, B)).toEqual(C)
-		expect(itemAfter(list, C)).toEqual(null)
-		expect(itemAfter(list, D)).toEqual(null)
-	})
+test('clear() removes all items', () => {
+	const list = [A, B, C]
+	clear(list)
+	expect(list).toEqual([])
+})
 
-	test('insert() puts item in correct place', () => {
-		const list = [A, C]
-		insert(list, 1, B)
-		expect(list).toEqual([A, B, C])
-	})
+test('itemBefore()', () => {
+	const list = [A, B, C]
+	expect(itemBefore(list, A)).toEqual(null)
+	expect(itemBefore(list, B)).toEqual(A)
+	expect(itemBefore(list, C)).toEqual(B)
+	expect(itemBefore(list, D)).toEqual(null)
+})
 
-	test('insert() puts item at end of list', () => {
-		const list = [A, B]
-		insert(list, 2, C)
-		expect(list).toEqual([A, B, C])
-	})
+test('itemAfter()', () => {
+	const list = [A, B, C]
+	expect(itemAfter(list, A)).toEqual(B)
+	expect(itemAfter(list, B)).toEqual(C)
+	expect(itemAfter(list, C)).toEqual(null)
+	expect(itemAfter(list, D)).toEqual(null)
+})
 
-	test('insert() throws if index is out of bounds', () => {
-		const f = () => insert([A, C], 5, B)
-		expect(f).toThrow(Error)
-	})
+test('insert() puts item in correct place', () => {
+	const list = [A, C]
+	insert(list, 1, B)
+	expect(list).toEqual([A, B, C])
+})
 
-	test('insertBefore() puts item in correct place', () => {
-		const list = [A, C]
-		insertBefore(list, C, B)
-		expect(list).toEqual([A, B, C])
-	})
+test('insert() puts item at end of list', () => {
+	const list = [A, B]
+	insert(list, 2, C)
+	expect(list).toEqual([A, B, C])
+})
 
-	test('insertBefore() throws if ref item not in list', () => {
-		const f = () => insertBefore([A, C], D, B)
-		expect(f).toThrow(Error)
-	})
+test('insert() throws if index is out of bounds', () => {
+	const f = () => insert([A, C], 5, B)
+	expect(f).toThrow(Error)
+})
+test('insertAfter() puts item in correct place', () => {
+	const list = [A, C]
+	insertAfter(list, A, B)
+	expect(list).toEqual([A, B, C])
+})
 
-	test('insertAfter() puts item in correct place', () => {
-		const list = [A, C]
-		insertAfter(list, A, B)
-		expect(list).toEqual([A, B, C])
-	})
+test('insertAfter() throws if ref item not in list', () => {
+	const f = () => insertAfter([A, C], D, B)
+	expect(f).toThrow(Error)
+})
 
-	test('insertAfter() throws if ref item not in list', () => {
-		const f = () => insertAfter([A, C], D, B)
-		expect(f).toThrow(Error)
-	})
+test('insertBefore() puts item in correct place', () => {
+	const list = [A, C]
+	insertBefore(list, C, B)
+	expect(list).toEqual([A, B, C])
+})
 
-	test('replace() swaps correct items', () => {
-		const list = [A, B, C]
-		replace(list, C, D)
-		expect(list).toEqual([A, B, D])
-	})
+test('insertBefore() throws if ref item not in list', () => {
+	const f = () => insertBefore([A, C], D, B)
+	expect(f).toThrow(Error)
+})
 
-	test('replace() throws if current item is not in list', () => {
-		const f = () => replace([A, B], D, C)
-		expect(f).toThrow(Error)
-	})
+test('last() returns null for empty list', () => {
+	const exp = last([])
+	expect(exp).toEqual(null)
+})
 
-	test('remove() remove correct item', () => {
-		const list = [A, B, C]
-		remove(list, B)
-		expect(list).toEqual([A, C])
-	})
+test('last() returns correct item', () => {
+	const exp = last([A, B, C])
+	expect(exp).toEqual(C)
+})
 
-	test('remove() remove nothing when item not in list', () => {
-		const list = [A, B, C]
-		remove(list, D)
-		expect(list).toEqual([A, B, C])
-	})
+test('remove() remove correct item', () => {
+	const list = [A, B, C]
+	remove(list, B)
+	expect(list).toEqual([A, C])
+})
 
-	test('clear() removes all items', () => {
-		const list = [A, B, C]
-		clear(list)
-		expect(list).toEqual([])
-	})
+test('remove() remove nothing when item not in list', () => {
+	const list = [A, B, C]
+	remove(list, D)
+	expect(list).toEqual([A, B, C])
+})
 
-	test('callAll() calls all functions', () => {
-		const called = []
-		const calledWith = []
+test('replace() swaps correct items', () => {
+	const list = [A, B, C]
+	replace(list, C, D)
+	expect(list).toEqual([A, B, D])
+})
 
-		const fA = (...args) => {
-			called.push(A)
-			calledWith.push(args)
-		}
+test('replace() throws if current item is not in list', () => {
+	const f = () => replace([A, B], D, C)
+	expect(f).toThrow(Error)
+})
 
-		const fB = (...args) => {
-			called.push(B)
-			calledWith.push(args)
-		}
+test('withinRange() with length excluded', () => {
+	const f = (i) => withinRange([A, B, C], i)
 
-		const list = [fA, C, fB, D]
-		callAll(list, 'rum', 'whiskey')
+	expect(f(-1)).toEqual(false)
+	expect(f(0)).toEqual(true)
+	expect(f(1)).toEqual(true)
+	expect(f(2)).toEqual(true)
+	expect(f(3)).toEqual(false)
+})
 
-		expect(called).toEqual([A, B])
-		expect(calledWith).toEqual([
-			['rum', 'whiskey'],
-			['rum', 'whiskey'],
-		])
-	})
+test('withinRange() with length included', () => {
+	const f = (i) => withinRange([A, B, C], i, true)
+
+	expect(f(-1)).toEqual(false)
+	expect(f(0)).toEqual(true)
+	expect(f(1)).toEqual(true)
+	expect(f(2)).toEqual(true)
+	expect(f(3)).toEqual(true)
+	expect(f(4)).toEqual(false)
 })
