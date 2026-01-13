@@ -4,7 +4,9 @@
 import ArrayUtil from './path/to/ArrayUtil.js'
 ```
 
-- [`beforeLast(array)`](#arrayutilbeforelastarray)
+**Functions**
+
+- [`beforeLast(array)`](#beforelastarray)
 - [`beforeLastIndex(array)`](#beforeLastIndexarray)
 - [`callAll(array, ...args)`](#callallarray-args)
 - [`clear(array, ...args)`](#cleararray)
@@ -16,7 +18,7 @@ import ArrayUtil from './path/to/ArrayUtil.js'
 - [`last(array)`](#lastarray)
 - [`lastIndex(array)`](#lastindexarray)
 - [`remove(array)`](#removearray)
-- [`replace(array, currentItem, newItem)`](#replacearrray-index-newitem)
+- [`replace(array, currentItem, newItem)`](#replacearray-currentitem-newitem)
 - [`withinRange(array, index, includeLength=false)`](#withinrangearray-index-includelengthfalse)
 
 ## `beforeLast(array)`
