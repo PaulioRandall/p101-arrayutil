@@ -1,4 +1,6 @@
-import {
+import ArrayUtil from './ArrayUtil.js'
+
+const {
 	beforeLast, //
 	beforeLastIndex,
 	callAll,
@@ -13,7 +15,7 @@ import {
 	remove,
 	replace,
 	withinRange,
-} from './ArrayUtil.js'
+} = ArrayUtil
 
 const A = 'A'
 const B = 'B'
