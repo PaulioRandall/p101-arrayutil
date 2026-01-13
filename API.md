@@ -49,7 +49,7 @@ const list = [
 ArrayUtil.callAll(list, 'arg1', 'arg2')
 ```
 
-## `clear()`
+## `clear(array)`
 
 Remove all items.
 
@@ -60,4 +60,87 @@ const list = ['A', 'B', 'C', 'D']
 ArrayUtil.clear(list)
 
 // list === []
+```
+
+## `insert(array)`
+
+Insert an item at the index location. An exception is
+thrown if the index is out of range.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'D']
+ArrayUtil.insert(list, 2, 'C')
+
+// list === ['A', 'B', 'C', 'D']
+```
+
+## `insertAfter(array, referenceItem, itemToInsert)`
+
+Insert an item after another item. If the reference item
+doesn't exist an exception is thrown.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'D']
+ArrayUtil.insertAfter(list, 'B', 'C')
+
+// list === ['A', 'B', 'C', 'D']
+```
+
+## `insertBefore(array, referenceItem, itemToInsert)`
+
+Inserts an item before another item. If the reference item
+doesn't exist an exception is thrown.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'C', 'D']
+ArrayUtil.insertBefore(list, 'C', 'B')
+
+// list === ['A', 'B', 'C', 'D']
+```
+
+## `itemAfter(array, referenceItem)`
+
+Return the item after the reference item. Null if no such
+item exists.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'C', 'D']
+const item = ArrayUtil.itemAfter(list, 'B')
+
+// item === 'C'
+```
+
+## `itemAfter(array, referenceItem)`
+
+Return the item before the reference item. Null if no
+such item exists.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'C', 'D']
+const item = ArrayUtil.itemBefore(list, 'C')
+
+// item === 'B'
+```
+
+## `last(array)`
+
+Returns the last item. Null if no such item.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'C', 'D']
+const item = ArrayUtil.last(list)
+
+// item === 'D'
 ```

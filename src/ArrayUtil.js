@@ -19,9 +19,6 @@ export function clear(array) {
 	array.splice(0)
 }
 
-// Insert an item at the index location.
-//
-// An exception is thrown if the index is out of range.
 export function insert(array, index, item) {
 	if (!withinRange(array, index, true)) {
 		throw new Error('Index is out of range')
@@ -30,8 +27,6 @@ export function insert(array, index, item) {
 	array.splice(index, 0, item)
 }
 
-// Insert an item after another item. If the reference
-// item doesn't exist an exception is thrown.
 export function insertAfter(array, refItem, item) {
 	const i = array.indexOf(refItem)
 
@@ -42,8 +37,6 @@ export function insertAfter(array, refItem, item) {
 	array.splice(i + 1, 0, item)
 }
 
-// Insert an item before another item. If the reference
-// item doesn't exist an exception is thrown.
 export function insertBefore(array, refItem, item) {
 	const i = array.indexOf(refItem)
 
@@ -54,22 +47,17 @@ export function insertBefore(array, refItem, item) {
 	array.splice(i, 0, item)
 }
 
-// Return the item after the reference item. Null if no
-// such item.
 export function itemAfter(array, refItem) {
 	const i = array.indexOf(refItem)
 	const lastIdx = lastIndex(array)
 	return i < 0 || i >= lastIdx ? null : array[i + 1]
 }
 
-// Return the item before the reference item. Null if no
-// such item.
 export function itemBefore(array, refItem) {
 	const i = array.indexOf(refItem)
 	return i <= 0 ? null : array[i - 1]
 }
 
-// Return the last item. Null if no such item.
 export function last(array) {
 	const i = lastIndex(array)
 	return i < 0 ? null : array[i]
