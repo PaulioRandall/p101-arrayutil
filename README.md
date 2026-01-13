@@ -4,33 +4,18 @@ JavaScript utility functions for manipulating and querying arrays.
 
 **[API documentation](./API.md)**
 
-## When to use
+## Usage
 
-> TODO
-> What's this for?
+Copy+paste functions you need from _[ArrayUtil.js](./src/ArrayUtil.js)_.
 
-> TODO
-> Why did I create it?
+I recommend copying any related tests too _[ArrayUtil.test.js](./src/ArrayUtil.test.js)_. Written in [Jest](https://jestjs.io/) but easy to adapt to your preferred tool.
 
-## How to use
+## Intentions
 
-1. **Copy a function**
+This library was created to house a collection of personalised generic array functions. It is intended for adhoc copy+paste use, but I may put on NPM for portfolio reasons. It includes functions not provided by _Lodash_.
 
-Copy and paste the the function you need from _[ArrayUtil.js](./src/ArrayUtil.js)_ into your project.
+## Why?
 
-2. **Copy the whole file of functions**
+This stuff is usually stored as Gists. I've used maybe 1 or 2 of the Gists I've created over the years because I forget they exist. I figured exploring alternative approaches to storing code snippets. Another problem with Gists is that I can't easily clone and run automated tests like a repository.
 
-Copy and paste the whole file of functions _[ArrayUtil.js](./src/ArrayUtil.js)_ into your project.
-
-3. **Copy tests**
-
-I recommend copying any related tests, or the whole test file _[ArrayUtil.test.js](./src/ArrayUtil.test.js)_ too. Then you can modify and extend to suit your project's needs.
-
-## Judgement
-
-> TODO
-> What are the pros and cons of the project in the following context:
->
-> - Generally?
-> - In any specific domains?
-> - In comparison to competitor products?
+I occasionally pull in [Lodash](https://lodash.com/docs) at work because others are familiar with it, but only when I need non-trivial functions on need to use a significant number of them.
