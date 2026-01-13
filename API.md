@@ -4,9 +4,22 @@
 import ArrayUtil from './path/to/ArrayUtil.js'
 ```
 
-- [`beforeLast(array)`](#ArrayUtil-beforeLast-array-)
+- [`beforeLast(array)`](#arrayutilbeforelastarray)
+- [`beforeLastIndex(array)`](#beforeLastIndexarray)
+- [`callAll(array, ...args)`](#callallarray-args)
+- [`clear(array, ...args)`](#cleararray)
+- [`insert(array, index, item)`](#insertarray-index-item)
+- [`insertAfter(array, referenceItem, itemToInsert)`](#insertafterarray-referenceitem-itemtoinsert)
+- [`insertBefore(array, referenceItem, itemToInsert)`](#insertbeforearray-referenceitem-itemtoinsert)
+- [`itemAfter(array, referenceItem)`](#itemafterarray-referenceitem)
+- [`itemBefore(array, referenceItem)`](#itembeforearray-referenceitem)
+- [`last(array)`](#lastarray)
+- [`lastIndex(array)`](#lastindexarray)
+- [`remove(array)`](#removearray)
+- [`replace(array, currentItem, newItem)`](#replacearrray-index-newitem)
+- [`withinRange(array, index, includeLength=false)`](#withinrangearray-index-includelengthfalse)
 
-## `ArrayUtil.beforeLast(array)`
+## `beforeLast(array)`
 
 Return the second from last item. Null if no such item.
 
@@ -19,7 +32,7 @@ const item = ArrayUtil.beforeLast(list)
 // item === "C"
 ```
 
-## `ArrayUtil.beforeLastIndex(array)`
+## `beforeLastIndex(array)`
 
 Return the index of the item second from last. The number
 will be negative if list length is less than 2.
@@ -34,7 +47,7 @@ const item = ArrayUtil.beforeLastIndex(list)
 // item === 2
 ```
 
-## `ArrayUtil.callAll(array, ...args)`
+## `callAll(array, ...args)`
 
 Iterates the list calling all callable items with the
 passed arguments. Callable items are those that return true
@@ -55,7 +68,7 @@ const list = [
 ArrayUtil.callAll(list, 'arg1', 'arg2')
 ```
 
-## `ArrayUtil.clear(array)`
+## `clear(array)`
 
 Remove all items.
 
@@ -68,7 +81,7 @@ ArrayUtil.clear(list)
 // list === []
 ```
 
-## `ArrayUtil.insert(array)`
+## `insert(array, index, item)`
 
 Insert an item at the index location. An exception is
 thrown if the index is out of range.
@@ -82,7 +95,7 @@ ArrayUtil.insert(list, 2, 'C')
 // list === ['A', 'B', 'C', 'D']
 ```
 
-## `ArrayUtil.insertAfter(array, referenceItem, itemToInsert)`
+## `insertAfter(array, referenceItem, itemToInsert)`
 
 Insert an item after another item. If the reference item
 doesn't exist an exception is thrown.
@@ -96,7 +109,7 @@ ArrayUtil.insertAfter(list, 'B', 'C')
 // list === ['A', 'B', 'C', 'D']
 ```
 
-## `ArrayUtil.insertBefore(array, referenceItem, itemToInsert)`
+## `insertBefore(array, referenceItem, itemToInsert)`
 
 Inserts an item before another item. If the reference item
 doesn't exist an exception is thrown.
@@ -110,7 +123,7 @@ ArrayUtil.insertBefore(list, 'C', 'B')
 // list === ['A', 'B', 'C', 'D']
 ```
 
-## `ArrayUtil.itemAfter(array, referenceItem)`
+## `itemAfter(array, referenceItem)`
 
 Return the item after the reference item. Null if no such
 item exists.
@@ -124,7 +137,7 @@ const item = ArrayUtil.itemAfter(list, 'B')
 // item === 'C'
 ```
 
-## `ArrayUtil.itemAfter(array, referenceItem)`
+## `itemBefore(array, referenceItem)`
 
 Return the item before the reference item. Null if no
 such item exists.
@@ -138,7 +151,7 @@ const item = ArrayUtil.itemBefore(list, 'C')
 // item === 'B'
 ```
 
-## `ArrayUtil.last(array)`
+## `last(array)`
 
 Returns the last item. Null if no such item.
 
@@ -151,7 +164,7 @@ const item = ArrayUtil.last(list)
 // item === 'D'
 ```
 
-## `ArrayUtil.lastIndex(array)`
+## `lastIndex(array)`
 
 Returns the index of the last item. The number will be
 negative if list is empty.
@@ -166,7 +179,7 @@ const index = ArrayUtil.lastIndex(list)
 // index === 3
 ```
 
-## `ArrayUtil.remove(array)`
+## `remove(array)`
 
 Remove the item if it exists.
 
@@ -179,7 +192,7 @@ ArrayUtil.remove(list, 'B')
 // list === ['A', 'C', 'D']
 ```
 
-## `ArrayUtil.replace(array, currentItem, newItem)`
+## `replace(array, currentItem, newItem)`
 
 Replace an existing item with a new item. If the
 existing item doesn't exist then an error is thrown.
@@ -193,7 +206,7 @@ ArrayUtil.replace(list, 'B', 'Beta')
 // list === ['A', 'Beta', 'C', 'D']
 ```
 
-## `ArrayUtil.withinRange(array, index, includeLength=false)`
+## `withinRange(array, index, includeLength=false)`
 
 Returns true if the index is an accessible list item. If
 includeLength is true, then true will be returned when the

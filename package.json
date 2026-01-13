@@ -1,7 +1,18 @@
 {
 	"name": "arrayutil",
+	"description": "JavaScript utility functions for manipulating and querying arrays",
+	"keywords": [
+		"array",
+		"utility"
+	],
 	"version": "0.1.0",
+	"author": "Paulio",
+	"license": "MIT",
 	"type": "module",
+	"main": "./src/ArrayUtil.js",
+	"files": [
+		"src"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/PaulioRandall/p101-arrayutil.git"
