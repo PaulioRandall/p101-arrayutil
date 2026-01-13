@@ -1,5 +1,9 @@
 # API
 
+```js
+import ArrayUtil from './path/to/file.js'
+```
+
 ## `beforeLast(array)`
 
 Return the second from last item. Null if no such item.

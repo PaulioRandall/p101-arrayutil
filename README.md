@@ -2,21 +2,29 @@
 
 JavaScript utility functions for manipulating and querying arrays.
 
-## Usage
+**[API documentation](./API.md)**
 
-> TODO
-> How do you use this project?
->
-> - Import from NPM.
-> - Copy functions and their tests into your project.
-
-## Intentions
+## When to use
 
 > TODO
 > What's this for?
 
 > TODO
 > Why did I create it?
+
+## How to use
+
+1. **Copy a function**
+
+Copy and paste the the function you need from _[ArrayUtil.js](./src/ArrayUtil.js)_ into your project.
+
+2. **Copy the whole file of functions**
+
+Copy and paste the whole file of functions _[ArrayUtil.js](./src/ArrayUtil.js)_ into your project.
+
+3. **Copy tests**
+
+I recommend copying any related tests, or the whole test file _[ArrayUtil.test.js](./src/ArrayUtil.test.js)_ too. Then you can modify and extend to suit your project's needs.
 
 ## Judgement
 
