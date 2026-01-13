@@ -144,3 +144,66 @@ const item = ArrayUtil.last(list)
 
 // item === 'D'
 ```
+
+## `lastIndex(array)`
+
+Returns the index of the last item. The number will be
+negative if list is empty.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+//             0,   1,   2,   3
+const list = ['A', 'B', 'C', 'D']
+const index = ArrayUtil.lastIndex(list)
+
+// index === 3
+```
+
+## `remove(array)`
+
+Remove the item if it exists.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'C', 'D']
+ArrayUtil.remove(list, 'B')
+
+// list === ['A', 'C', 'D']
+```
+
+## `replace(array, currentItem, newItem)`
+
+Replace an existing item with a new item. If the
+existing item doesn't exist then an error is thrown.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'C', 'D']
+ArrayUtil.replace(list, 'B', 'Beta')
+
+// list === ['A', 'Beta', 'C', 'D']
+```
+
+## `withinRange(array, index, includeLength=false)`
+
+Returns true if the index is an accessible list item. If
+includeLength is true, then true will be returned when the
+index is equal to the array length.
+
+```js
+import ArrayUtil from './path/to/file.js'
+
+const list = ['A', 'B', 'C', 'D']
+
+let index = ArrayUtil.withinRange(list, 2)
+// index === true
+
+index = ArrayUtil.withinRange(list, 4)
+// index === false
+
+index = ArrayUtil.withinRange(list, 4, true)
+// index === true
+```
