@@ -1,20 +1,12 @@
-// Return the second from last item. Null if no such
-// item.
 export function beforeLast(array) {
 	const i = beforeLastIndex(array)
 	return i < 0 ? null : array[i]
 }
 
-// Return the index of the item second from last. The
-// number will be negative if list length is less than
-// 2.
 export function beforeLastIndex(array) {
 	return array.length - 2
 }
 
-// Iterates the list calling all callable items with
-// the passed arguments. Callable items are those that
-// return true for `typeof item === 'function'`.
 export function callAll(array, ...args) {
 	array.forEach((item) => {
 		if (typeof item === 'function') {
@@ -23,7 +15,6 @@ export function callAll(array, ...args) {
 	})
 }
 
-// Remove all items.
 export function clear(array) {
 	array.splice(0)
 }
