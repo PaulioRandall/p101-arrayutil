@@ -1,21 +1,22 @@
 {
-	"name": "arrayutil",
-	"description": "JavaScript utility functions for manipulating and querying arrays",
+	"name": "js-util",
+	"description": "Paulio's personal JavaScript utility library",
 	"keywords": [
-		"array",
-		"utility"
+		"javascript",
+		"utility",
+		"personal"
 	],
 	"version": "0.1.0",
 	"author": "Paulio",
 	"license": "MIT",
 	"type": "module",
-	"main": "./src/ArrayUtil.js",
+	"main": "index.js",
 	"files": [
 		"src"
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/PaulioRandall/p101-arrayutil.git"
+		"url": "https://github.com/PaulioRandall/p101-js-util.git"
 	},
 	"scripts": {
 		"fmt": "prettier --log-level warn --write .",
