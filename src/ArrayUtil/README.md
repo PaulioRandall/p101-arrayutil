@@ -25,7 +25,7 @@ import ArrayUtil from './path/to/ArrayUtil.js'
 - [`replace(array, currentItem, newItem)`](#replacearray-currentitem-newitem)
 - [`withinRange(array, index, includeLength=false)`](#withinrangearray-index-includelengthfalse)
 
-## `beforeLast(array)`
+### `beforeLast(array)`
 
 Return the second from last item. Null if no such item.
 
@@ -38,7 +38,7 @@ const item = ArrayUtil.beforeLast(list)
 // item === "C"
 ```
 
-## `beforeLastIndex(array)`
+### `beforeLastIndex(array)`
 
 Return the index of the item second from last. The number
 will be negative if list length is less than 2.
@@ -53,7 +53,7 @@ const item = ArrayUtil.beforeLastIndex(list)
 // item === 2
 ```
 
-## `callAll(array, ...args)`
+### `callAll(array, ...args)`
 
 Iterates the list calling all callable items with the
 passed arguments. Callable items are those that return true
@@ -74,7 +74,7 @@ const list = [
 ArrayUtil.callAll(list, 'arg1', 'arg2')
 ```
 
-## `clear(array)`
+### `clear(array)`
 
 Remove all items.
 
@@ -87,7 +87,7 @@ ArrayUtil.clear(list)
 // list === []
 ```
 
-## `insert(array, index, item)`
+### `insert(array, index, item)`
 
 Insert an item at the index location. An exception is
 thrown if the index is out of range.
@@ -101,7 +101,7 @@ ArrayUtil.insert(list, 2, 'C')
 // list === ['A', 'B', 'C', 'D']
 ```
 
-## `insertAfter(array, referenceItem, itemToInsert)`
+### `insertAfter(array, referenceItem, itemToInsert)`
 
 Insert an item after another item. If the reference item
 doesn't exist an exception is thrown.
@@ -115,7 +115,7 @@ ArrayUtil.insertAfter(list, 'B', 'C')
 // list === ['A', 'B', 'C', 'D']
 ```
 
-## `insertBefore(array, referenceItem, itemToInsert)`
+### `insertBefore(array, referenceItem, itemToInsert)`
 
 Inserts an item before another item. If the reference item
 doesn't exist an exception is thrown.
@@ -129,7 +129,7 @@ ArrayUtil.insertBefore(list, 'C', 'B')
 // list === ['A', 'B', 'C', 'D']
 ```
 
-## `itemAfter(array, referenceItem)`
+### `itemAfter(array, referenceItem)`
 
 Return the item after the reference item. Null if no such
 item exists.
@@ -143,7 +143,7 @@ const item = ArrayUtil.itemAfter(list, 'B')
 // item === 'C'
 ```
 
-## `itemBefore(array, referenceItem)`
+### `itemBefore(array, referenceItem)`
 
 Return the item before the reference item. Null if no
 such item exists.
@@ -157,7 +157,7 @@ const item = ArrayUtil.itemBefore(list, 'C')
 // item === 'B'
 ```
 
-## `last(array)`
+### `last(array)`
 
 Returns the last item. Null if no such item.
 
@@ -170,7 +170,7 @@ const item = ArrayUtil.last(list)
 // item === 'D'
 ```
 
-## `lastIndex(array)`
+### `lastIndex(array)`
 
 Returns the index of the last item. The number will be
 negative if list is empty.
@@ -185,7 +185,7 @@ const index = ArrayUtil.lastIndex(list)
 // index === 3
 ```
 
-## `remove(array)`
+### `remove(array)`
 
 Remove the item if it exists.
 
@@ -198,7 +198,7 @@ ArrayUtil.remove(list, 'B')
 // list === ['A', 'C', 'D']
 ```
 
-## `replace(array, currentItem, newItem)`
+### `replace(array, currentItem, newItem)`
 
 Replace an existing item with a new item. If the
 existing item doesn't exist then an error is thrown.
@@ -212,7 +212,7 @@ ArrayUtil.replace(list, 'B', 'Beta')
 // list === ['A', 'Beta', 'C', 'D']
 ```
 
-## `withinRange(array, index, includeLength=false)`
+### `withinRange(array, index, includeLength=false)`
 
 Returns true if the index is an accessible list item. If
 includeLength is true, then true will be returned when the

@@ -1,22 +1,14 @@
-function Embed(classes = [], props = {}) {
+function Embed(...classes) {
 	class BaseClazz {
 		constructor() {
 			for (const EmbedClazz of classes) {
 				this['_' + EmbedClazz.name] = new EmbedClazz()
-			}
-
-			for (const propName in props) {
-				this['_' + propName] = props[propName]
 			}
 		}
 	}
 
 	for (const EmbedClazz of classes) {
 		defineEmbedClazzProps(BaseClazz, EmbedClazz)
-	}
-
-	for (const propName in props) {
-		defineAccessorProp(BaseClazz, propName)
 	}
 
 	return BaseClazz
@@ -48,21 +40,6 @@ function defineEmbedClazzProps(BaseClazz, EmbedClazz) {
 			defineFuncProp(BaseClazz, desc)
 		}
 	}
-}
-
-function defineAccessorProp(Clazz, name) {
-	const fieldName = '_' + name
-
-	Object.defineProperty(Clazz.prototype, name, {
-		configurable: true,
-		enumerable: false,
-		get: function () {
-			return this[fieldName]
-		},
-		set: function (v) {
-			this[fieldName] = v
-		},
-	})
 }
 
 function ignoreProp(desc) {

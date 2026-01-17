@@ -43,7 +43,7 @@ class B {
 
 describe('Embed.js', () => {
 	test('Adds getter', () => {
-		class AddsGetters extends Embed([A, B]) {}
+		class AddsGetters extends Embed(A, B) {}
 		const instance = new AddsGetters()
 
 		expect(instance.a).toEqual('alpha')
@@ -51,7 +51,7 @@ describe('Embed.js', () => {
 	})
 
 	test('Adds setter', () => {
-		class AddsSetters extends Embed([A, B]) {}
+		class AddsSetters extends Embed(A, B) {}
 		const instance = new AddsSetters()
 
 		instance.a = 'changed alpha'
@@ -62,7 +62,7 @@ describe('Embed.js', () => {
 	})
 
 	test('Adds functions', () => {
-		class AddsFunctions extends Embed([A, B]) {}
+		class AddsFunctions extends Embed(A, B) {}
 		const instance = new AddsFunctions()
 
 		expect(typeof instance.getA).toEqual('function')
@@ -79,28 +79,5 @@ describe('Embed.js', () => {
 
 		expect(instance.a).toEqual('changed alpha')
 		expect(instance.b).toEqual('changed beta')
-	})
-
-	test('Adds props', () => {
-		class AddsProps extends Embed([], {
-			c: 'charlie',
-			d: function () {
-				return 'delta'
-			},
-		}) {
-			getC() {
-				return this._c
-			}
-		}
-
-		const instance = new AddsProps()
-
-		expect(instance._c).toEqual('charlie')
-		expect(instance.c).toEqual('charlie')
-		instance.c = 'barly'
-		expect(instance.getC()).toEqual('barly')
-
-		expect(typeof instance._d).toEqual('function')
-		expect(instance._d()).toEqual('delta')
 	})
 })

@@ -1,40 +1,49 @@
 # EmbedUtil
 
-> TODO: Remove props stuff, or move it to its own package.
+Minimalist function for replicating [Go struct embedding](https://pkg.go.dev/embed). Embedding is a form of polymorphism and an alternative to both inheritance and mixins. I'd say the approach lies somewhere between inheritance and mixins in terms of flexibility, complexity, and error proneness.
 
-Minimalist function for replicating [Go struct embedding](https://pkg.go.dev/embed). Embedding is an alternative to inheritance and allows for multiple embedded classes, unlike 'extends'.
+An interesting experiment. Very limited and will probably break when using anything except basic class properties. It has potential and I intend to play around with it a bit.
 
-Interesting experiment. Very limited and will probably break when using anything except basic class properties. It's basically a 'decorator' generator (see decorator pattern).
+A good use case is in helping to avoid god classes by meaningfully spliting functionality down into isolated component classes each with a clear responsibility. The former 'god' class now has a single responsibility, to integrate the component classes.
 
-## Discussion
-
-There's advantages and disadvantages to Embedding vs Inheritance. You can't store or pass the value of 'super', because
-it's just an accessor to properties, but you can store
-and pass the embedded properties. Because they're just class instances assigned to a field in the embedor class. Whether you should share embedded class instances is a different argument. E.g:
-
-```js
-const embeddedClass = this.\_embeddedClassInstance`
-```
+Your main issue with embedding in JavaScript is conflict in property and method names. It may force you to embed more context into your method names, making them longer and less readable. Maybe forcing you to think about your design more carefully is a good thing.
 
 ## API
 
 ```js
 import Embed from './path/to/Embed.js'
-
-class Derived extends Embed(
-	BaseClass1,
-	BaseClass2,
-	...,
-) {
-	// Derived class specific code.
-}
 ```
 
-## Quick Example
+**Functions**
+
+- [`Embed(...classes)`](#embedclasses)
+
+### `Embed(...classes)`
+
+Creates a new class that embeds the argument classes.
 
 ```js
 import Embed from './path/to/Embed.js'
 
+class DerivedClass extends Embed(Class1, Class2, ...etc) {
+	// Derived class specific code.
+}
+
+// Or
+var CombinedClass = Embed(Class1, Class2, ...etc)
+class DerivedClass extends CombinedClass {
+	// Derived class specific code.
+}
+```
+
+**Simple Example**
+
+A more detailed example can be found at [./Example.js](./Example.js).
+
+```js
+import Embed from './path/to/Embed.js'
+
+// Class to be embedded.
 class WithName {
 	_name = ''
 
@@ -47,6 +56,7 @@ class WithName {
 	}
 }
 
+// Another class to be embedded.
 class WithAge {
 	_age = 64
 
@@ -59,7 +69,8 @@ class WithAge {
 	}
 }
 
-class Person extends Embed([WithName, WithAge]) {
+// Derived class.
+class Person extends Embed(WithName, WithAge) {
 	_eyeColor = ''
 
 	constructor(name, age, eyeColor) {
@@ -72,10 +83,11 @@ class Person extends Embed([WithName, WithAge]) {
 		return this._eyeColor
 	}
 }
+```
 
-const charlie = new Person('Charlie', 65, 'blue')
+This is also possible if you need no additional properties.
 
-console.log(charlie.getName()) // Prints `Charlie`
-console.log(charlie.age) // Prints `65`
-console.log(charlie.eyeColor) // Prints `blue`
+```js
+const ClassWithNameAndAge = Embed(WithName, WithAge)
+const thing = new ClassWithNameAndAge()
 ```

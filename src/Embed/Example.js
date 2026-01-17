@@ -32,7 +32,7 @@ class Identifiable {
 }
 
 // A simple class that allows styles to be stored and
-// retrieved.
+// accessed.
 class Styleable {
 	_styles = new Map()
 
@@ -59,7 +59,7 @@ class Styleable {
 
 // Class embedding Identifiable and Styleable using the
 // Embed function.
-class AutoEmbed extends Embed([Identifiable, Styleable]) {
+class Thing1 extends Embed(Identifiable, Styleable) {
 	constructor() {
 		this.id = crypto.randomUUID()
 	}
@@ -73,9 +73,8 @@ class AutoEmbed extends Embed([Identifiable, Styleable]) {
 	}
 }
 
-// This class represents the class returned from
-// Embed(Identifiable, Styleable) which is extended by
-// AutoEmbed.
+// Embed(Identifiable, Styleable) returns a class similar
+// to this.
 class ClassReturnedFromEmbed {
 	constructor() {
 		this._Identifiable = new Identifiable()
@@ -100,45 +99,6 @@ class ClassReturnedFromEmbed {
 
 	setStyle(...args) {
 		return this._Styleable.setStyle(...args)
-	}
-}
-
-// If you were to write it yourself it would probably look
-// like this.
-class ManualEmbed {
-	constructor() {
-		this._Identifiable = new Identifiable()
-		this._Styleable = new Styleable()
-
-		this.id = crypto.randomUUID()
-	}
-
-	get id() {
-		return this._Identifiable.id
-	}
-
-	set id(id) {
-		this._Identifiable.id = id
-	}
-
-	equals(...args) {
-		return this._Identifiable.equals(...args)
-	}
-
-	getStyle(...args) {
-		return this._Styleable.getStyle(...args)
-	}
-
-	setStyle(...args) {
-		return this._Styleable.setStyle(...args)
-	}
-
-	show() {
-		this.setStyle('visibility', 'visible')
-	}
-
-	hide() {
-		this.setStyle('visibility', 'hidden')
 	}
 }
 
