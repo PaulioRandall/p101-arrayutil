@@ -1,5 +1,7 @@
 # EmbedUtil
 
+> TODO: Remove props stuff, or move it to its own package.
+
 Minimalist function for replicating [Go struct embedding](https://pkg.go.dev/embed). Embedding is an alternative to inheritance and allows for multiple embedded classes, unlike 'extends'.
 
 Interesting experiment. Very limited and will probably break when using anything except basic class properties. It's basically a 'decorator' generator (see decorator pattern).
