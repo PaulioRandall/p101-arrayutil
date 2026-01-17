@@ -10,7 +10,6 @@
 	"author": "Paulio",
 	"license": "MIT",
 	"type": "module",
-	"main": "index.js",
 	"files": [
 		"src"
 	],
