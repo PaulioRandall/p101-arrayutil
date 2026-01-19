@@ -103,4 +103,22 @@ describe('Embed.js', () => {
 		expect(instance._B._b).toEqual('beta')
 		expect(instance._C._c).toEqual('cheese')
 	})
+
+	test('Embed as public field', () => {
+		class PublicEmbed extends Embed({
+			type: A, //
+			public: true,
+		}) {}
+
+		const instance = new PublicEmbed()
+
+		expect(typeof instance.getA).toEqual('function')
+		expect(typeof instance.setA).toEqual('function')
+
+		expect(instance.A.a).toEqual('alpha')
+		expect(instance.getA()).toEqual('alpha')
+
+		instance.setA('changed alpha')
+		expect(instance.a).toEqual('changed alpha')
+	})
 })

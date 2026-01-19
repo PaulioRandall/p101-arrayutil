@@ -1,21 +1,46 @@
 function Embed(...classes) {
+	const classList = prepClassList(classes)
+
 	class BaseClazz {
 		constructor() {
-			for (const EmbedClazz of classes) {
-				this['_' + EmbedClazz.name] = new EmbedClazz()
+			for (const entry of classList) {
+				this[entry.name] = new entry.type()
 			}
 		}
 	}
 
-	for (const EmbedClazz of classes) {
-		defineEmbedClazzProps(BaseClazz, EmbedClazz)
+	for (const entry of classList) {
+		defineEmbedClazzProps(BaseClazz, entry)
 	}
 
 	return BaseClazz
 }
 
-function defineEmbedClazzProps(BaseClazz, EmbedClazz) {
-	const propName = '_' + EmbedClazz.name
+function prepClassList(classes) {
+	return classes.map((clazz) => {
+		const isObjType = isBaseObject(clazz)
+		const type = isObjType ? clazz.type : clazz
+		const namePrefix = isObjType && clazz.public ? '' : '_'
+
+		return {
+			type: type,
+			name: namePrefix + type.name,
+		}
+	})
+}
+
+function isBaseObject(type) {
+	const proto = Object.getPrototypeOf(
+		Object.getPrototypeOf(type) //
+	)
+
+	return proto === null
+}
+
+function defineEmbedClazzProps(BaseClazz, entry) {
+	//console.log(entry)
+	const EmbedClazz = entry.type
+	const propName = entry.name
 	const subPropNames = Object.getOwnPropertyNames(
 		EmbedClazz.prototype //
 	)

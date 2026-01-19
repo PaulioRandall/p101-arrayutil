@@ -29,9 +29,13 @@ class DerivedClass extends Embed(Class1, Class2, ...etc) {
 	// Derived class specific code.
 }
 
-// Or
-var CombinedClass = Embed(Class1, Class2, ...etc)
-class DerivedClass extends CombinedClass {
+// Or if you want a class instance to be a public field.
+class DerivedClass extends Embed(
+	{ type: Class1, public: true },
+	{ type: Class2, public: false },
+	Class3, // Can still pass the classes directly.
+	...etc
+) {
 	// Derived class specific code.
 }
 ```
