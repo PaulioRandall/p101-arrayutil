@@ -7,38 +7,78 @@ function onUpdate(map) {
 }
 
 describe('DirtyMap.js', () => {
-	describe('put(k,v)', () => {
-		test('New entry causes map to become dirty', () => {
-			const m = new DirtyMap()
-			const result = m.put('a', 1)
+	test('put(k,v): New entry causes key to become dirty', () => {
+		const m = new DirtyMap()
+		const result = m.put('a', 1)
 
-			expect(m.get('a')).toEqual(1)
-			expect(m.isKeyDirty('a')).toEqual(true)
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(true)
 
-			expect(result).toEqual(m)
-		})
+		expect(result).toEqual(m)
+	})
 
-		test('Updating entry with new value causes map to become dirty', () => {
-			const m = new DirtyMap()
+	test('put(k,v): Updating entry with new value causes key to become dirty', () => {
+		const m = new DirtyMap()
 
-			m.put('a', 1)
-			m.clean()
-			m.put('a', 2)
+		m.put('a', 1)
+		m.clean()
+		m.put('a', 2)
 
-			expect(m.get('a')).toEqual(2)
-			expect(m.isKeyDirty('a')).toEqual(true)
-		})
+		expect(m.get('a')).toEqual(2)
+		expect(m.isKeyDirty('a')).toEqual(true)
+	})
 
-		test('Updating entry with the same value does not cause map to become dirty', () => {
-			const m = new DirtyMap()
+	test('put(k,v): Updating entry with the same value does not cause key to become dirty', () => {
+		const m = new DirtyMap()
 
-			m.put('a', 1)
-			m.clean()
-			m.put('a', 1)
+		m.put('a', 1)
+		m.clean()
+		m.put('a', 1)
 
-			expect(m.get('a')).toEqual(1)
-			expect(m.isKeyDirty('a')).toEqual(false)
-		})
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(false)
+	})
+
+	test('put(k,v,f): Custom compare function overides default function', () => {
+		const m = new DirtyMap()
+
+		m.put('a', 1)
+		m.clean()
+		m.put('a', '1', (a, b) => a == b)
+
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(false)
+	})
+
+	test('set(k,v): New entry causes key to become dirty', () => {
+		const m = new DirtyMap()
+		const result = m.set('a', 1)
+
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(true)
+
+		expect(result).toEqual(m)
+	})
+
+	test('set(k,v): Updating entry with new value causes key to become dirty', () => {
+		const m = new DirtyMap()
+
+		m.set('a', 1)
+		m.clean()
+		m.set('a', 2)
+
+		expect(m.get('a')).toEqual(2)
+		expect(m.isKeyDirty('a')).toEqual(true)
+	})
+
+	test('set(k,v): Updating entry with the same value causes key to become dirty', () => {
+		const m = new DirtyMap()
+
+		m.set('a', 1)
+		m.clean()
+		m.set('a', 1)
+
+		expect(m.isKeyDirty('a')).toEqual(true)
 	})
 
 	/*

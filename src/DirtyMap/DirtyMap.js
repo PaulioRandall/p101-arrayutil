@@ -28,32 +28,25 @@ export default class DirtyMap extends Map {
 		return this._dirty.length
 	}
 
-	// Removes all keys from the dirty set. Returns the
-	// DirtyMap instance.
 	clean() {
 		this._dirty.clear()
 		return this
 	}
 
-	// Sets the default function that tests for equality.
-	// For some functions that mutate the map, this
-	// determines whether a key will become dirty as a result
-	// of the operation. Returns the DirtyMap instance.
-	//
-	// By default, a strict equality (triple equals) is used.
 	equalsIf(f) {
 		checkCmpFunc(f)
 		this._equals = f
 		return this
 	}
 
-	// Puts the value in the map for the given key. If the
-	// old and new values are not equal then the key will be
-	// added to the dirty set. Returns the DirtyMap
-	// instance.
-	//
-	// The set function will always add the key to the dirty
-	// set.
+	isDirty() {
+		return this._dirty.size > 0
+	}
+
+	isKeyDirty(key) {
+		return this._dirty.has(key)
+	}
+
 	put(k, v, f) {
 		checkCmpFunc(f, true)
 
@@ -71,18 +64,10 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	// Returns true if the map is dirty, i.e. 1 or more
-	// values have changed since the map creation or the last
-	// call to clean.
-	isDirty() {
-		return this._dirty.size > 0
-	}
-
-	// Returns true if the specified key is dirty, i.e. its
-	// value has changed since the map creation or the last
-	// call to clean.
-	isKeyDirty(key) {
-		return this._dirty.has(key)
+	set(k, v) {
+		super.set(k, v)
+		this._dirty.add(k)
+		return this
 	}
 
 	/*
