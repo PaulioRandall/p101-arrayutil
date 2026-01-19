@@ -20,7 +20,7 @@ import Embed from './path/to/Embed.js'
 
 ### `Embed(...classes)`
 
-Creates a new class that embeds the argument classes.
+Returns a new class that embeds the argument classes. Public properties with the same name in one class will be redifined by subsequent classes, thus will only be accessible by referencing the embedded class instance specifically.
 
 ```js
 import Embed from './path/to/Embed.js'

@@ -80,4 +80,27 @@ describe('Embed.js', () => {
 		expect(instance.a).toEqual('changed alpha')
 		expect(instance.b).toEqual('changed beta')
 	})
+
+	test('Props are overitten by subsequent classes', () => {
+		class C {
+			_c = 'charlie'
+
+			getA() {
+				return this._c
+			}
+
+			setB(v) {
+				this._c = v
+			}
+		}
+
+		class AddsFunctions extends Embed(A, B, C) {}
+		const instance = new AddsFunctions()
+
+		expect(instance.getA()).toEqual('charlie')
+
+		instance.setB('cheese')
+		expect(instance._B._b).toEqual('beta')
+		expect(instance._C._c).toEqual('cheese')
+	})
 })
