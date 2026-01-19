@@ -71,7 +71,7 @@ function lastIndex(array) {
 	return array.length - 1
 }
 
-function remove(array, item) {
+function removeFromArray(array, item) {
 	const i = array.indexOf(item)
 
 	if (i > -1) {
@@ -108,7 +108,7 @@ export default {
 	itemBefore,
 	last,
 	lastIndex,
-	remove,
+	remove: removeFromArray,
 	replace,
 	withinRange,
 }
