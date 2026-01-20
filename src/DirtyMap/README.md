@@ -14,23 +14,23 @@ from the [builtin Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/R
 **Values**
 
 - `size`
-- [`dirtySize`](#dirtysize)
+- [`dirty`](#dirty)
 
 **Functions**
 
 - [`clean()`](#clean)
 - [`delete(key)`](#deletekey)
-- [`equalsIf()`](#equalsif)
+- [`equalsIf(compareFunction)`](#equalsifcompareFunction)
 - [`isDirty()`](#isDirty)
 - [`isKeyDirty(key)`](#isKeyDirtykey)
 - [`put(key, value, compareFunction)`](#putkey-value-compareFunction)
-- [putMissing(key, value, compareFunction)](#putMissingkey-value-compareFunction)
+- [`putMissing(key, value, compareFunction)`](#putMissingkey-value-compareFunction)
 - [`set(key, value)`](#setkey-value)
 - [`setDirty(key)`](#setDirtyvalue)
 
-### `dirtySize`
+### `dirty`
 
-Returns the number of dirty keys in the map.
+Returns the dirty set, which is a standard [JavaScript Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'
@@ -40,7 +40,7 @@ const map = new DirtyMap()
 map.set('a', 1)
 map.set('b', 2)
 
-const numberOfDirtyKeys = map.dirtySize
+const numberOfDirtyKeys = map.dirty.size
 // numberOfDirtyKeys === 2
 ```
 
@@ -55,12 +55,12 @@ const map = new DirtyMap()
 map.set('a', 1)
 map.set('b', 2)
 
-// map.dirtySize === 2
+// map.dirty.size === 2
 map.clean()
-// map.dirtySize === 0
+// map.dirty.size === 0
 ```
 
-### `delete()`
+### `delete(key)`
 
 Deletes an entry if it exists. The key is flagged as dirty only if a deletion occurred.
 
@@ -80,7 +80,7 @@ map.delete('a')
 // map.isKeyDirty('a') === false
 ```
 
-### `equalsIf()`
+### `equalsIf(compareFunction)`
 
 Sets the default function that tests for equality. For some functions that mutate the map, this determines whether a key will become dirty as a result of the operation. Returns the DirtyMap instance.
 
@@ -208,7 +208,7 @@ map.putMissing('a', 2)
 // map.get('a') === 1
 ```
 
-### `set(key, value, compareFunction)`
+### `set(key, value)`
 
 Sets the value in the map for the given key and the key is added to the dirty set. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
 
@@ -232,18 +232,4 @@ map.put('b', 2)
 
 // map.isKeyDirty('a') === true
 // map.isKeyDirty('b') === false
-```
-
-### `setDirty(key)`
-
-Sets a key as dirty. Keys do not have to be in the map, since deleted keys are also dirty.
-
-```js
-import DirtyMap from './path/to/DirtyMap.js'
-
-const map = new DirtyMap()
-
-// map.isKeyDirty('a') === false
-map.setDirty('a')
-// map.isKeyDirty('a') === true
 ```

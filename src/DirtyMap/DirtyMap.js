@@ -23,18 +23,12 @@ export default class DirtyMap extends Map {
 	_dirty = new Set()
 	_equals = defaultEquals
 
-	get dirtySize() {
-		return this._dirty.length
+	get dirty() {
+		return this._dirty
 	}
 
 	clean() {
 		this._dirty.clear()
-		return this
-	}
-
-	equalsIf(f) {
-		checkCmpFunc(f)
-		this._equals = f
 		return this
 	}
 
@@ -44,6 +38,12 @@ export default class DirtyMap extends Map {
 			this._dirty.add(k)
 		}
 
+		return this
+	}
+
+	equalsIf(f) {
+		checkCmpFunc(f)
+		this._equals = f
 		return this
 	}
 
@@ -85,15 +85,10 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	setDirty(k) {
-		this._dirty.add(k)
-		return this
-	}
+	// TODO: Iterator functions
 
 	/*
-
-
-		// Puts all enumerable own properties of the object into
+	// Puts all enumerable own properties of the object into
 	// the map. Triggers a single update notification.
 	putProps(obj) {
 		if (this._putProps(obj)) {
@@ -114,36 +109,10 @@ export default class DirtyMap extends Map {
 		return changed
 	}
 
-	// Returns the underlying map entries.
-	map(f) {
-		const result = []
-
-		for (const entry of this._map.entries()) {
-			result.push(f(entry))
-		}
-
-		return result
-	}
-
 	// Returns true if putting this name value pair will
 	// cause the name to be become dirty.
-	willDirty(name, value) {
-		return !this._map.has(name) || this._map.get(name) !== value
+	willPutDirty(k, v) {
+		return !this.has(k) || this.get(k) !== v
 	}
-
-	// Sets a name as dirty. Name does not have to be in the
-	// map itself.
-	dirty(name) {
-		this._dirty.add(name)
-		this.updated()
-		return this
-	}
-
-	// Returns an array of all dirty names.
-	listDirty() {
-		return [...this._dirty]
-	}
-
-
 	*/
 }

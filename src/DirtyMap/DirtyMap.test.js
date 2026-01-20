@@ -108,15 +108,6 @@ describe('DirtyMap.js', () => {
 
 	/*
 
-	test('putMissing: already exists', () => {
-		const m = new DirtyMap()
-
-		m.put('a', undefined)
-		m.putMissing('a', 123)
-
-		expect(m.get('a')).toEqual(undefined)
-	})
-
 	test('putProps()', () => {
 		const m = new DirtyMap()
 
@@ -131,53 +122,6 @@ describe('DirtyMap.js', () => {
 		expect(m.get('b')).toEqual(2)
 
 		expect(m.listDirty()).toEqual(['b'])
-	})
-
-	test('val: gets', () => {
-		const m = new DirtyMap()
-
-		m.put('a', 1)
-		m.put('b', 2)
-
-		expect(m.val('a')).toEqual(1)
-		expect(m.val('b')).toEqual(2)
-	})
-
-	test('val: puts', () => {
-		const m = new DirtyMap()
-
-		m.val('a', 1)
-		m.val('b', 2)
-
-		expect(m.get('a')).toEqual(1)
-		expect(m.get('b')).toEqual(2)
-	})
-
-	test('del', () => {
-		const m = new DirtyMap()
-
-		m.put('a', 1)
-		m.put('b', 2)
-
-		m.del('a')
-
-		expect(m.has('a')).toEqual(false)
-		expect(m.get('a')).toEqual(undefined)
-		expect(m.get('b')).toEqual(2)
-	})
-
-	test('del: calls update', () => {
-		const m = new DirtyMap()
-		m.put('a', 1)
-		m.put('b', 2)
-
-		const observer = onUpdate(m)
-
-		expect(observer.count).toEqual(0)
-		m.del('a')
-		expect(observer.count).toEqual(1)
-		m.del('a')
-		expect(observer.count).toEqual(1)
 	})
 	*/
 })
