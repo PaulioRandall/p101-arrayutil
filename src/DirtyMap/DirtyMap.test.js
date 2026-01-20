@@ -61,6 +61,28 @@ describe('DirtyMap.js', () => {
 		expect(m.isKeyDirty('a')).toEqual(false)
 	})
 
+	test('putAll(obj): Puts all values', () => {
+		const m = new DirtyMap()
+
+		m.set('a', 1)
+		m.set('b', 2)
+		m.clean()
+
+		m.putAll({
+			a: 1,
+			b: -2,
+			c: 3,
+		})
+
+		expect(m.get('a')).toEqual(1)
+		expect(m.get('b')).toEqual(-2)
+		expect(m.get('c')).toEqual(3)
+
+		expect(m.isKeyDirty('a')).toEqual(false)
+		expect(m.isKeyDirty('b')).toEqual(true)
+		expect(m.isKeyDirty('c')).toEqual(true)
+	})
+
 	test('putMissing(k,v,f): Adds an entry when missing and ignores when not', () => {
 		const m = new DirtyMap()
 
@@ -106,22 +128,25 @@ describe('DirtyMap.js', () => {
 		expect(m.isKeyDirty('a')).toEqual(true)
 	})
 
-	/*
-
-	test('putProps()', () => {
+	test('setAll(obj): Sets all values', () => {
 		const m = new DirtyMap()
 
-		const obj = Object.create(
-			{ a: 1 }, //
-			{ b: { value: 2 } } //
-		)
+		m.set('a', 1)
+		m.set('b', 2)
+		m.clean()
 
-		m.putProps(obj)
+		m.setAll({
+			a: 1,
+			b: -2,
+			c: 3,
+		})
 
-		expect(m.has('a')).toEqual(false)
-		expect(m.get('b')).toEqual(2)
+		expect(m.get('a')).toEqual(1)
+		expect(m.get('b')).toEqual(-2)
+		expect(m.get('c')).toEqual(3)
 
-		expect(m.listDirty()).toEqual(['b'])
+		expect(m.isKeyDirty('a')).toEqual(true)
+		expect(m.isKeyDirty('b')).toEqual(true)
+		expect(m.isKeyDirty('c')).toEqual(true)
 	})
-	*/
 })

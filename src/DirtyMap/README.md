@@ -1,6 +1,6 @@
 # DirtyMap
 
-Wraps the builtin JavaScript Map to keep a track of what's changed.
+Decorates the builtin JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) to keep a track of keys that have changed.
 
 ## API
 
@@ -8,15 +8,18 @@ Wraps the builtin JavaScript Map to keep a track of what's changed.
 import DirtyMap from './path/to/DirtyMap.js'
 ```
 
-All map values and functions are listed but only those that differ
-from the [builtin Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#instance_properties) are documented here.
+All new and overidden values and functions are listed. Use standard builtin [Map documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) to learn about other map values and functions.
 
 **Values**
 
-- `size`
 - [`dirty`](#dirty)
 
 **Functions**
+
+> TODO: willPutDirty(k, v)
+> TODO: clear()
+> TODO: getOrInsert(k, defaultValue)
+> TODO: getOrInsertComputed(k, valueGeneratorFunc)
 
 - [`clean()`](#clean)
 - [`delete(key)`](#deletekey)
@@ -24,9 +27,10 @@ from the [builtin Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/R
 - [`isDirty()`](#isDirty)
 - [`isKeyDirty(key)`](#isKeyDirtykey)
 - [`put(key, value, compareFunction)`](#putkey-value-compareFunction)
+- [`putAll(object, compareFunction)`](#putAllobject-compareFunction)
 - [`putMissing(key, value, compareFunction)`](#putMissingkey-value-compareFunction)
 - [`set(key, value)`](#setkey-value)
-- [`setDirty(key)`](#setDirtyvalue)
+- [`setAll(object)`](#setAllobject)
 
 ### `dirty`
 
@@ -190,6 +194,32 @@ map.put('a', '3', (a, b) => a == b)
 // map.isKeyDirty('a') === true
 ```
 
+### `putAll(object, compareFunction)`
+
+Puts all key/value pairs into the map that either do not currently exist or are not considered equal to the current value. Only keys that resulted in setting a new value become dirty. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+map.set('a', 1)
+map.set('b', 2)
+map.clean()
+
+map.putAll({
+	a: 1,
+	b: -2,
+	c: 3,
+})
+
+// map.get('a') === 1
+// map.get('b') === -2
+// map.get('c') === 3
+
+// map.dirty === ['b', 'c']
+```
+
 ### `putMissing(key, value, compareFunction)`
 
 Puts a value into the map only if the key does not currently exist. The key does not become dirty if the value is not put. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
@@ -232,4 +262,30 @@ map.put('b', 2)
 
 // map.isKeyDirty('a') === true
 // map.isKeyDirty('b') === false
+```
+
+### `setAll(object)`
+
+Sets all key/value pairs in the map. All set keys will become become dirty. Returns the DirtyMap instance.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+map.set('a', 1)
+map.set('b', 2)
+map.clean()
+
+map.setAll({
+	a: 1,
+	b: -2,
+	c: 3,
+})
+
+// map.get('a') === 1
+// map.get('b') === -2
+// map.get('c') === 3
+
+// map.dirty === ['a', 'b', 'c']
 ```

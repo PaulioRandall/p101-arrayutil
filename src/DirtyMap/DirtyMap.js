@@ -72,6 +72,16 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
+	putAll(obj, f) {
+		const keys = Object.getOwnPropertyNames(obj)
+
+		for (const k of keys) {
+			this.put(k, obj[k], f)
+		}
+
+		return this
+	}
+
 	putMissing(k, v, f) {
 		if (!this.has(k)) {
 			this.put(k, v, f)
@@ -85,30 +95,17 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	// TODO: Iterator functions
+	setAll(obj) {
+		const keys = Object.getOwnPropertyNames(obj)
 
-	/*
-	// Puts all enumerable own properties of the object into
-	// the map. Triggers a single update notification.
-	putProps(obj) {
-		if (this._putProps(obj)) {
-			this.updated()
+		for (const k of keys) {
+			this.set(k, obj[k])
 		}
 
 		return this
 	}
 
-	_putProps(obj) {
-		const names = Object.getOwnPropertyNames(obj)
-		let changed = false
-
-		for (const n of names) {
-			changed = this._put(n, obj[n], false) || changed
-		}
-
-		return changed
-	}
-
+	/*
 	// Returns true if putting this name value pair will
 	// cause the name to be become dirty.
 	willPutDirty(k, v) {
