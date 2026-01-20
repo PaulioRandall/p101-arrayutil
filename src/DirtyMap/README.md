@@ -240,9 +240,9 @@ map.putMissing('a', 2)
 
 ### `set(key, value)`
 
-Sets the value in the map for the given key and the key is added to the dirty set. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
+Sets the value in the map for the given key and the key is added to the dirty set. Returns the DirtyMap instance.
 
-Unlike this set function, the put function will only change the value (and key be added to the dirty set), if the values are not considered equal.
+Unlike this set function, the put function will only change the value (and key be added to the dirty set) if the values are not considered equal.
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'
