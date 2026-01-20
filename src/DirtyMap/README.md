@@ -18,11 +18,11 @@ All new and overidden values and functions are listed. Use standard builtin [Map
 
 **Functions**
 
-> TODO: clear()
 > TODO: getOrInsert(k, defaultValue)
 > TODO: getOrInsertComputed(k, valueGeneratorFunc)
 
 - [`clean()`](#clean)
+- [`clear()`](#clear)
 - [`delete(key)`](#deletekey)
 - [`equalsIf(compareFunction)`](#equalsifcompareFunction)
 - [`isDirty()`](#isDirty)
@@ -64,6 +64,28 @@ map.set('b', 2)
 // map.dirty.size === 2
 map.clean()
 // map.dirty.size === 0
+```
+
+### `clear()`
+
+Clears the map adding all keys to the dirty set. Returns the DirtyMap instance.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+map.set('a', 1)
+map.set('b', 2)
+map.set('c', 3)
+
+map.clean()
+// map === {'a': 1, 'b': 2, 'c': 3}
+// map.dirty === []
+
+map.clear()
+// map === {}
+// map.dirty === ['a', 'b', 'c']
 ```
 
 ### `delete(key)`

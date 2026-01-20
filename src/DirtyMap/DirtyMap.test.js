@@ -151,15 +151,30 @@ describe('DirtyMap.js', () => {
 	})
 
 	test('willPutDirty(k,v)', () => {
-		const map = new DirtyMap()
+		const m = new DirtyMap()
 
-		let willbeDirty = map.willPutDirty('a', 1)
+		let willbeDirty = m.willPutDirty('a', 1)
 		expect(willbeDirty).toEqual(true)
 
-		map.set('a', 1)
-		map.clean()
+		m.set('a', 1)
+		m.clean()
 
-		willbeDirty = map.willPutDirty('a', 1)
+		willbeDirty = m.willPutDirty('a', 1)
 		expect(willbeDirty).toEqual(false)
+	})
+
+	test('clear()', () => {
+		const m = new DirtyMap()
+
+		m.set('a', 1)
+		m.set('b', 2)
+		m.set('c', 3)
+		m.clean()
+
+		m.clear()
+
+		expect(m.isKeyDirty('a')).toEqual(true)
+		expect(m.isKeyDirty('b')).toEqual(true)
+		expect(m.isKeyDirty('c')).toEqual(true)
 	})
 })

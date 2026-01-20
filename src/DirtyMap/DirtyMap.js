@@ -29,6 +29,15 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
+	clear() {
+		for (const k of this.keys()) {
+			this._dirty.add(k)
+		}
+
+		super.clear()
+		return this
+	}
+
 	delete(k) {
 		if (this.has(k)) {
 			super.delete(k)
