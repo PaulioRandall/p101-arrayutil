@@ -23,7 +23,6 @@ export default class DirtyMap extends Map {
 	_dirty = new Set()
 	_equals = defaultEquals
 
-	// Returns the number of dirty keys in the map.
 	get dirtySize() {
 		return this._dirty.length
 	}
@@ -36,6 +35,15 @@ export default class DirtyMap extends Map {
 	equalsIf(f) {
 		checkCmpFunc(f)
 		this._equals = f
+		return this
+	}
+
+	delete(k) {
+		if (this.has(k)) {
+			super.delete(k)
+			this._dirty.add(k)
+		}
+
 		return this
 	}
 
@@ -64,22 +72,26 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
+	putMissing(k, v, f) {
+		if (!this.has(k)) {
+			this.put(k, v, f)
+		}
+		return this
+	}
+
 	set(k, v) {
 		super.set(k, v)
 		this._dirty.add(k)
 		return this
 	}
 
-	/*
-		// Puts a value into the map only if the name is not
-	// a key currently in the map.
-	putMissing(name, value) {
-		if (!this._map.has(name)) {
-			this.put(name, value)
-		}
-
+	setDirty(k) {
+		this._dirty.add(k)
 		return this
 	}
+
+	/*
+
 
 		// Puts all enumerable own properties of the object into
 	// the map. Triggers a single update notification.
@@ -91,23 +103,6 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	_put(name, value, forceDirty = false) {
-		const changed = this.willDirty(name, value)
-
-		if (changed) {
-			this._map.set(name, value)
-		}
-
-		if (forceDirty || changed) {
-			this._dirty.add(name)
-			return true
-		}
-
-		return false
-	}
-
-
-
 	_putProps(obj) {
 		const names = Object.getOwnPropertyNames(obj)
 		let changed = false
@@ -117,27 +112,6 @@ export default class DirtyMap extends Map {
 		}
 
 		return changed
-	}
-
-	// If value is undefined, then returns the result of the
-	// 'get' function. If value is defined, then this calls
-	// the 'put' function.
-	val(name, value = undefined, forceDirty = false) {
-		if (value === undefined) {
-			return this.get(name)
-		}
-		return this.put(name, value, forceDirty)
-	}
-
-	// Deletes an entry if it exists. Causes the name to be
-	// entered into the dirty map if a deletion occurred.
-	del(name) {
-		if (this._map.has(name)) {
-			this._dirty.add(name)
-			this._map.delete(name)
-			this.updated()
-		}
-		return this
 	}
 
 	// Returns the underlying map entries.

@@ -19,11 +19,30 @@ from the [builtin Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/R
 **Functions**
 
 - [`clean()`](#clean)
+- [`delete(key)`](#deletekey)
 - [`equalsIf()`](#equalsif)
 - [`isDirty()`](#isDirty)
 - [`isKeyDirty(key)`](#isKeyDirtykey)
 - [`put(key, value, compareFunction)`](#putkey-value-compareFunction)
+- [putMissing(key, value, compareFunction)](#putMissingkey-value-compareFunction)
 - [`set(key, value)`](#setkey-value)
+- [`setDirty(key)`](#setDirtyvalue)
+
+### `dirtySize`
+
+Returns the number of dirty keys in the map.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+map.set('a', 1)
+map.set('b', 2)
+
+const numberOfDirtyKeys = map.dirtySize
+// numberOfDirtyKeys === 2
+```
 
 ### `clean()`
 
@@ -39,6 +58,26 @@ map.set('b', 2)
 // map.dirtySize === 2
 map.clean()
 // map.dirtySize === 0
+```
+
+### `delete()`
+
+Deletes an entry if it exists. The key is flagged as dirty only if a deletion occurred.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+map.set('a', 1)
+map.clean()
+
+map.delete('a')
+// map.isKeyDirty('a') === true
+
+map.clean()
+map.delete('a')
+// map.isKeyDirty('a') === false
 ```
 
 ### `equalsIf()`
@@ -151,6 +190,24 @@ map.put('a', '3', (a, b) => a == b)
 // map.isKeyDirty('a') === true
 ```
 
+### `putMissing(key, value, compareFunction)`
+
+Puts a value into the map only if the key does not currently exist. The key does not become dirty if the value is not put. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+map.putMissing('a', 1)
+// map.isKeyDirty('a') === true
+
+map.clean()
+map.putMissing('a', 2)
+// map.isKeyDirty('a') === false
+// map.get('a') === 1
+```
+
 ### `set(key, value, compareFunction)`
 
 Sets the value in the map for the given key and the key is added to the dirty set. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
@@ -175,4 +232,18 @@ map.put('b', 2)
 
 // map.isKeyDirty('a') === true
 // map.isKeyDirty('b') === false
+```
+
+### `setDirty(key)`
+
+Sets a key as dirty. Keys do not have to be in the map, since deleted keys are also dirty.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+// map.isKeyDirty('a') === false
+map.setDirty('a')
+// map.isKeyDirty('a') === true
 ```

@@ -7,6 +7,17 @@ function onUpdate(map) {
 }
 
 describe('DirtyMap.js', () => {
+	test('delete(k): Deletes an entry an puts key in dirty set', () => {
+		const m = new DirtyMap()
+
+		m.put('a', 1)
+		m.clean()
+		m.delete('a')
+
+		expect(m.has('a')).toEqual(false)
+		expect(m.isKeyDirty('a')).toEqual(true)
+	})
+
 	test('put(k,v): New entry causes key to become dirty', () => {
 		const m = new DirtyMap()
 		const result = m.put('a', 1)
@@ -46,6 +57,20 @@ describe('DirtyMap.js', () => {
 		m.clean()
 		m.put('a', '1', (a, b) => a == b)
 
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(false)
+	})
+
+	test('putMissing(k,v,f): Adds an entry when missing and ignores when not', () => {
+		const m = new DirtyMap()
+
+		m.putMissing('a', 1)
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(true)
+
+		m.clean()
+
+		m.putMissing('a', 2)
 		expect(m.get('a')).toEqual(1)
 		expect(m.isKeyDirty('a')).toEqual(false)
 	})
