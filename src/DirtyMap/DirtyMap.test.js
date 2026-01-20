@@ -149,4 +149,17 @@ describe('DirtyMap.js', () => {
 		expect(m.isKeyDirty('b')).toEqual(true)
 		expect(m.isKeyDirty('c')).toEqual(true)
 	})
+
+	test('willPutDirty(k,v)', () => {
+		const map = new DirtyMap()
+
+		let willbeDirty = map.willPutDirty('a', 1)
+		expect(willbeDirty).toEqual(true)
+
+		map.set('a', 1)
+		map.clean()
+
+		willbeDirty = map.willPutDirty('a', 1)
+		expect(willbeDirty).toEqual(false)
+	})
 })

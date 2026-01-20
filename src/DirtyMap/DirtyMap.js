@@ -16,9 +16,6 @@ function checkCmpFunc(f, skipIfUndefined = false) {
 	}
 }
 
-// DirtyMap keeps track of entries that have changed. It
-// does not record what or how those changes were made.
-// Calling the clean function will clear all keys of dirt.
 export default class DirtyMap extends Map {
 	_dirty = new Set()
 	_equals = defaultEquals
@@ -51,40 +48,32 @@ export default class DirtyMap extends Map {
 		return this._dirty.size > 0
 	}
 
-	isKeyDirty(key) {
-		return this._dirty.has(key)
+	isKeyDirty(k) {
+		return this._dirty.has(k)
 	}
 
 	put(k, v, f) {
 		checkCmpFunc(f, true)
-
-		const hasKey = this.has(k)
-		const currValue = this.get(k)
-		const areEqual = f ? f : this._equals
-
-		if (hasKey && areEqual(currValue, v)) {
-			return this
-		}
-
-		super.set(k, v)
-		this._dirty.add(k)
-
+		this._put(k, v, f)
 		return this
 	}
 
 	putAll(obj, f) {
+		checkCmpFunc(f, true)
 		const keys = Object.getOwnPropertyNames(obj)
 
 		for (const k of keys) {
-			this.put(k, obj[k], f)
+			this._put(k, obj[k], f)
 		}
 
 		return this
 	}
 
 	putMissing(k, v, f) {
+		checkCmpFunc(f, true)
+
 		if (!this.has(k)) {
-			this.put(k, v, f)
+			this._put(k, v, f)
 		}
 		return this
 	}
@@ -105,11 +94,27 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	/*
-	// Returns true if putting this name value pair will
-	// cause the name to be become dirty.
-	willPutDirty(k, v) {
-		return !this.has(k) || this.get(k) !== v
+	willPutDirty(k, v, f) {
+		checkCmpFunc(f, true)
+
+		return (
+			this._dirty[k] || //
+			!this.has(k) || //
+			!this._isEqual(k, v, f)
+		)
 	}
-	*/
+
+	_put(k, v, f) {
+		if (!this._isEqual(k, v, f)) {
+			super.set(k, v)
+			this._dirty.add(k)
+		}
+	}
+
+	_isEqual(k, v, f) {
+		const hasKey = this.has(k)
+		const currValue = this.get(k)
+		const areEqual = f ? f : this._equals
+		return hasKey && areEqual(currValue, v)
+	}
 }

@@ -1,6 +1,8 @@
 # DirtyMap
 
-Decorates the builtin JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) to keep a track of keys that have changed.
+DirtyMap keeps a set of all keys for entries that are dirty, i.e. those that have been added, changed, deleted, or flagged by the user. It does not record what changes were made. Calling the clean function will clear the dirty set.
+
+Implementation wise, it decorates the builtin JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
 ## API
 
@@ -16,7 +18,6 @@ All new and overidden values and functions are listed. Use standard builtin [Map
 
 **Functions**
 
-> TODO: willPutDirty(k, v)
 > TODO: clear()
 > TODO: getOrInsert(k, defaultValue)
 > TODO: getOrInsertComputed(k, valueGeneratorFunc)
@@ -31,6 +32,7 @@ All new and overidden values and functions are listed. Use standard builtin [Map
 - [`putMissing(key, value, compareFunction)`](#putMissingkey-value-compareFunction)
 - [`set(key, value)`](#setkey-value)
 - [`setAll(object)`](#setAllobject)
+- [`willPutDirty(key, value, compareFunction)`](#willPutDirtykey-value-compareFunction)
 
 ### `dirty`
 
@@ -288,4 +290,23 @@ map.setAll({
 // map.get('c') === 3
 
 // map.dirty === ['a', 'b', 'c']
+```
+
+### `willPutDirty(key, value, compareFunction)`
+
+Returns true if the key is already dirty or putting the key/value pair will result in the key becomming dirty. An optional compare function may be passed to override the default or configured function.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+let willbeDirty = map.willPutDirty('a', 1)
+// willbeDirty === true
+
+map.set('a', 1)
+map.clean()
+
+willbeDirty = map.willPutDirty('a', 1)
+// willbeDirty === false
 ```

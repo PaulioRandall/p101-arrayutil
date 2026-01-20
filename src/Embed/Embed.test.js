@@ -1,5 +1,5 @@
 import Embed from './Embed.js'
-import _ from './Example.js'
+import './Example.js'
 
 class A {
 	_a = 'alpha'

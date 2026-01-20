@@ -33,7 +33,7 @@ class DerivedClass extends Embed(Class1, Class2, ...etc) {
 class DerivedClass extends Embed(
 	{ type: Class1, public: true },
 	{ type: Class2, public: false },
-	Class3, // Can still pass the classes directly.
+	Class3, // Can still pass other classes directly.
 	...etc
 ) {
 	// Derived class specific code.
@@ -73,8 +73,13 @@ class WithAge {
 	}
 }
 
+const Person = Embed(WithName, WithAge)
+
 // Derived class.
-class Person extends Embed(WithName, WithAge) {
+//
+// Alternatively extend directly, e.g.
+// `class PersonWithEyeColor extends Embed(WithName, WithAge)`
+class PersonWithEyeColor extends Person {
 	_eyeColor = ''
 
 	constructor(name, age, eyeColor) {
@@ -87,11 +92,4 @@ class Person extends Embed(WithName, WithAge) {
 		return this._eyeColor
 	}
 }
-```
-
-This is also possible if you need no additional properties.
-
-```js
-const ClassWithNameAndAge = Embed(WithName, WithAge)
-const thing = new ClassWithNameAndAge()
 ```
