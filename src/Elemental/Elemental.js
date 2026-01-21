@@ -8,15 +8,8 @@ function checkElement(elem) {
 	}
 }
 
-function formatAttrValueFromMap(map) {
-	const values = []
-
-	for (const [k, v] of map.entries()) {
-		const strVal = Array.isArray(v) ? v.join(' ') : v
-		values.push(`${k}(${strVal})`)
-	}
-
-	return values.join(' ')
+function formatAttrValue(v) {
+	return Array.isArray(v) ? v.join(' ') : v
 }
 
 function setOrDeleteMapEntry(map, k, v) {
@@ -28,24 +21,44 @@ function setOrDeleteMapEntry(map, k, v) {
 }
 
 export default class Elemental {
+	_styles = new Map()
 	_transforms = new Map()
+
+	applyTo(elem) {
+		checkElement(elem)
+
+		this._applyStyles(elem)
+		this._applyTransforms(elem)
+
+		return this
+	}
+
+	style(k, v = undefined) {
+		setOrDeleteMapEntry(this._styles, k, v)
+		return this
+	}
 
 	transform(k, v = undefined) {
 		setOrDeleteMapEntry(this._transforms, k, v)
 		return this
 	}
 
-	applyTo(elem) {
-		checkElement(elem)
-
-		this._applyTransforms(elem)
-
-		return this
+	_applyStyles(elem) {
+		for (const [k, v] of this._styles.entries()) {
+			const value = formatAttrValue(v)
+			elem.style[k] = value
+		}
 	}
 
 	_applyTransforms(elem) {
-		const value = formatAttrValueFromMap(this._transforms)
-		elem.style.transform = value
+		const values = []
+
+		for (const [k, v] of this._transforms.entries()) {
+			const strVal = formatAttrValue(v)
+			values.push(`${k}(${strVal})`)
+		}
+
+		elem.style.transform = values.join(' ')
 	}
 }
 

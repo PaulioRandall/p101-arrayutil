@@ -19,6 +19,12 @@ export default class AutoElemental extends Elemental {
 		return this
 	}
 
+	style(...args) {
+		super.style(...args)
+		this._update()
+		return this
+	}
+
 	transform(...args) {
 		super.transform(...args)
 		this._update()

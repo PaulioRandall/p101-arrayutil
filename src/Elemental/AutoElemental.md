@@ -17,6 +17,7 @@ Only overridden methods are specified here.
 **Instance Methods**
 
 - [`setElement(element)`](#setElementelement)
+- [`style(key, value)`](#stylekey-value)
 - [`transform(key, value)`](#transformkey-value)
 
 ### `element`
@@ -46,6 +47,10 @@ const elem = document.createElement('div')
 etal.setElement(elem)
 ```
 
+### `style(key, value)`
+
+Overides to call the applyTo function, with the set element, after setting a style. Does nothing if no element set.
+
 ### `transform(key, value)`
 
-Overides to call the applyTo function, with the set element, after setting a transformation. Does nothing if an element is not set.
+Overides to call the applyTo function, with the set element, after setting a transformation. Does nothing if no element set.
