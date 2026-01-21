@@ -2,26 +2,40 @@
 
 > TODO: Summary description.
 
-## API
+## Class API
 
 ```js
 import Elemental from './path/to/Elemental.js'
 ```
 
-**Values**
+**Instance Values**
 
-> TODO: what values?
+- [`element`](#element)
 
-- [`abc`](#abc)
+**Instance Methods**
 
-**Functions**
+- [`transform(key, value)`](#transformkey-value)
+- [`update()`](#update)
 
-- [`xyz()`](#xyz)
+### `element`
 
-### `abc`
+Gets or sets the element. When setting, must be an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) or sub class of it.
+
+```js
+import Elemental from './path/to/Elemental.js'
+
+const etal = new Elemental()
+
+etal.element = document.createElement('div')
+
+const el = etal.element
+// el === HTMLElement of type 'div'
+```
+
+### `transform(key, value)`
 
 > TODO
 
-### `xyz()`
+### `update()`
 
 > TODO

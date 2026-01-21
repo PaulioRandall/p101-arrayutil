@@ -1,3 +1,71 @@
+import DirtyMap from '../DirtyMap/DirtyMap.js'
+
+function formatAttrValueFromMap(map) {
+	const values = []
+
+	for (const [k, v] of map.entries()) {
+		v = Array.isArray(v) ? v.join(' ') : v
+		values.push(`${k}(${v})`)
+	}
+
+	return values.join(' ')
+}
+
+function createUpdateOrDeleteDirtyMap(map, k, v) {
+	if (v === undefined) {
+		map.delete(k)
+	} else {
+		map.put(k, v)
+	}
+}
+
+export default class Elemental {
+	_element = null
+	_transforms = new DirtyMap()
+
+	constructor(element) {
+		this.element = element
+	}
+
+	get element() {
+		return this._element
+	}
+
+	set element(v) {
+		// TODO: Check it is an instanceof Element, error if not
+		this._element = v
+		return v
+	}
+
+	transform(k, v = undefined) {
+		createUpdateOrDeleteDirtyMap(this._transforms, k, v)
+		return this
+	}
+
+	isDirty() {
+		return this._transforms.isDirty()
+	}
+
+	update() {
+		if (!this._element) {
+			return this
+		}
+
+		this._updateTransforms()
+		return this
+	}
+
+	_updateTransforms() {
+		if (!this._transforms.isDirty()) {
+			return
+		}
+
+		this._transforms.clean()
+		const value = formatAttrValueFromMap(this._transforms)
+		this._element.style.transform = value
+	}
+}
+
 /*
 import { randomId } from './util.js'
 import Updateable from './Updateable.js'

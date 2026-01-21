@@ -2,13 +2,13 @@
 
 Functions for manipulating and querying arrays. When pulling in [Lodash](https://lodash.com/docs) would be overkill.
 
-## API
+## Object API
 
 ```js
 import ArrayUtil from './path/to/ArrayUtil.js'
 ```
 
-**Functions**
+**Object Functions**
 
 - [`beforeLast(array)`](#beforelastarray)
 - [`beforeLastIndex(array)`](#beforeLastIndexarray)

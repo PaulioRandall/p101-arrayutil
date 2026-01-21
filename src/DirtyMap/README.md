@@ -4,7 +4,7 @@ DirtyMap keeps a set of all keys for entries that are dirty, i.e. those that hav
 
 Implementation wise, it decorates the builtin JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
-## API
+## Class API
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'
@@ -12,11 +12,11 @@ import DirtyMap from './path/to/DirtyMap.js'
 
 All new and overidden values and functions are listed. Use standard builtin [Map documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) to learn about other map values and functions.
 
-**Values**
+**Instance Values**
 
 - [`dirty`](#dirty)
 
-**Functions**
+**Instance Functions**
 
 - [`clean()`](#clean)
 - [`clear()`](#clear)
