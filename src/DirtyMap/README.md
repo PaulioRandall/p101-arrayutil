@@ -46,6 +46,9 @@ map.set('b', 2)
 
 const numberOfDirtyKeys = map.dirty.size
 // numberOfDirtyKeys === 2
+
+const dirtyKeys = map.dirty.keys
+// dirtyKeys = ['a', 'b']
 ```
 
 ### `clean()`
@@ -185,7 +188,7 @@ map.put('a', 2)
 
 ### `put(key, value, compareFunction)`
 
-Puts the value in the map for the given key only if the values are not equal. If they are equal then the new value is map and the key is added to the dirty set. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
+Puts the value in the map for the given key only if the values are not equal. If they are equal then the new value is map and the key is added to the dirty set. An optional compare function may be passed, otherwise `(a, b) => a === b` is used. Returns the DirtyMap instance.
 
 Unlike this put function, the set function will always add the key to the dirty set, even if the values are considered equal.
 
@@ -232,7 +235,7 @@ map.put('a', '3', (a, b) => a == b)
 
 ### `putAll(object, compareFunction)`
 
-Puts all key/value pairs into the map that either do not currently exist or are not considered equal to the current value. Only keys that resulted in setting a new value become dirty. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
+Puts all key/value pairs into the map that either do not currently exist or are not considered equal to the current value. Only keys that resulted in setting a new value become dirty. An optional compare function may be passed, otherwise `(a, b) => a === b` is used. Returns the DirtyMap instance.
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'
@@ -258,7 +261,7 @@ map.putAll({
 
 ### `putMissing(key, value, compareFunction)`
 
-Puts a value into the map only if the key does not currently exist. The key does not become dirty if the value is not put. An optional compare function may be passed to override the default or configured function. Returns the DirtyMap instance.
+Puts a value into the map only if the key does not currently exist. The key does not become dirty if the value is not put. An optional compare function may be passed, otherwise `(a, b) => a === b` is used. Returns the DirtyMap instance.
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'
@@ -276,7 +279,7 @@ map.putMissing('a', 2)
 
 ### `putWillDirty(key, value, compareFunction)`
 
-Returns true if the key is already dirty or putting the key/value pair will result in the key becomming dirty. An optional compare function may be passed to override the default or configured function.
+Returns true if the key is already dirty or putting the key/value pair will result in the key becomming dirty. An optional compare function may be passed, otherwise `(a, b) => a === b` is used.
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'
