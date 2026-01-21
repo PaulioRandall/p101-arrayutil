@@ -1,8 +1,8 @@
-# ArrayUtil
+# Object ArrayUtil
 
 Functions for manipulating and querying arrays. When pulling in [Lodash](https://lodash.com/docs) would be overkill.
 
-## Object API
+## API
 
 ```js
 import ArrayUtil from './path/to/ArrayUtil.js'

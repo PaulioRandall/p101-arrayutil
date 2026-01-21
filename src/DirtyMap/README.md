@@ -1,10 +1,10 @@
-# DirtyMap
+# Class: DirtyMap
 
 DirtyMap keeps a set of all keys for entries that are dirty, i.e. those that have been added, changed, deleted, or flagged by the user. It does not record what changes were made. Calling the clean function will clear the dirty set.
 
 Implementation wise, it decorates the builtin JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 
-## Class API
+## API
 
 ```js
 import DirtyMap from './path/to/DirtyMap.js'

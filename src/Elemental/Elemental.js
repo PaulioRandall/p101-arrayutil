@@ -1,5 +1,9 @@
 import DirtyMap from '../DirtyMap/DirtyMap.js'
 
+function err(msg) {
+	return new Error(`[Elemental] ${msg}`)
+}
+
 function formatAttrValueFromMap(map) {
 	const values = []
 
@@ -11,7 +15,7 @@ function formatAttrValueFromMap(map) {
 	return values.join(' ')
 }
 
-function createUpdateOrDeleteDirtyMap(map, k, v) {
+function setOrDeleteDirtyMapEntry(map, k, v) {
 	if (v === undefined) {
 		map.delete(k)
 	} else {
@@ -24,21 +28,24 @@ export default class Elemental {
 	_transforms = new DirtyMap()
 
 	constructor(element) {
-		this.element = element
+		this._element = element
 	}
 
 	get element() {
 		return this._element
 	}
 
-	set element(v) {
-		// TODO: Check it is an instanceof Element, error if not
+	setElement(v) {
+		if (!(v instanceof Element)) {
+			throw err(`Not an Element, was given '${typeof Element}'`)
+		}
+
 		this._element = v
-		return v
+		return this
 	}
 
 	transform(k, v = undefined) {
-		createUpdateOrDeleteDirtyMap(this._transforms, k, v)
+		setOrDeleteDirtyMapEntry(this._transforms, k, v)
 		return this
 	}
 
