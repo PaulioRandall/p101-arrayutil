@@ -115,7 +115,7 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	willPutDirty(k, v, f = strictEquals) {
+	putWillDirty(k, v, f = strictEquals) {
 		checkCmpFunc(f)
 
 		return (

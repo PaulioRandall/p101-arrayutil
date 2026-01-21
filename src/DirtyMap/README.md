@@ -28,9 +28,9 @@ All new and overidden values and functions are listed. Use standard builtin [Map
 - [`put(key, value, compareFunction)`](#putkey-value-compareFunction)
 - [`putAll(object, compareFunction)`](#putAllobject-compareFunction)
 - [`putMissing(key, value, compareFunction)`](#putMissingkey-value-compareFunction)
+- [`putWillDirty(key, value, compareFunction)`](#putWillDirtykey-value-compareFunction)
 - [`set(key, value)`](#setkey-value)
 - [`setAll(object)`](#setAllobject)
-- [`willPutDirty(key, value, compareFunction)`](#willPutDirtykey-value-compareFunction)
 
 ### `dirty`
 
@@ -274,6 +274,25 @@ map.putMissing('a', 2)
 // map.get('a') === 1
 ```
 
+### `putWillDirty(key, value, compareFunction)`
+
+Returns true if the key is already dirty or putting the key/value pair will result in the key becomming dirty. An optional compare function may be passed to override the default or configured function.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+let willbeDirty = map.putWillDirty('a', 1)
+// willbeDirty === true
+
+map.set('a', 1)
+map.clean()
+
+willbeDirty = map.putWillDirty('a', 1)
+// willbeDirty === false
+```
+
 ### `set(key, value)`
 
 Sets the value in the map for the given key and the key is added to the dirty set. Returns the DirtyMap instance.
@@ -324,23 +343,4 @@ map.setAll({
 // map.get('c') === 3
 
 // map.dirty === ['a', 'b', 'c']
-```
-
-### `willPutDirty(key, value, compareFunction)`
-
-Returns true if the key is already dirty or putting the key/value pair will result in the key becomming dirty. An optional compare function may be passed to override the default or configured function.
-
-```js
-import DirtyMap from './path/to/DirtyMap.js'
-
-const map = new DirtyMap()
-
-let willbeDirty = map.willPutDirty('a', 1)
-// willbeDirty === true
-
-map.set('a', 1)
-map.clean()
-
-willbeDirty = map.willPutDirty('a', 1)
-// willbeDirty === false
 ```

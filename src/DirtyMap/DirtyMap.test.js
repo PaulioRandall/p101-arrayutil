@@ -185,16 +185,16 @@ describe('DirtyMap.js', () => {
 		expect(m.isKeyDirty('c')).toEqual(true)
 	})
 
-	test('willPutDirty(k,v)', () => {
+	test('putWillDirty(k,v)', () => {
 		const m = new DirtyMap()
 
-		let willbeDirty = m.willPutDirty('a', 1)
+		let willbeDirty = m.putWillDirty('a', 1)
 		expect(willbeDirty).toEqual(true)
 
 		m.set('a', 1)
 		m.clean()
 
-		willbeDirty = m.willPutDirty('a', 1)
+		willbeDirty = m.putWillDirty('a', 1)
 		expect(willbeDirty).toEqual(false)
 	})
 
