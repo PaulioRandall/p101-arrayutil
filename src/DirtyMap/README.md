@@ -18,12 +18,11 @@ All new and overidden values and functions are listed. Use standard builtin [Map
 
 **Functions**
 
-> TODO: getOrInsert(k, defaultValue)
-> TODO: getOrInsertComputed(k, valueGeneratorFunc)
-
 - [`clean()`](#clean)
 - [`clear()`](#clear)
 - [`delete(key)`](#deletekey)
+- [`getOrInsert(key, defaultValue)`](#getOrInsertkey-defaultValue)
+- [`getOrInsertComputed(key, valueGenerator)`](#getOrInsertComputedkey-valueGenerator)
 - [`isDirty()`](#isDirty)
 - [`isKeyDirty(key)`](#isKeyDirtykey)
 - [`put(key, value, compareFunction)`](#putkey-value-compareFunction)
@@ -105,6 +104,44 @@ map.delete('a')
 map.clean()
 map.delete('a')
 // map.isKeyDirty('a') === false
+```
+
+### `getOrInsert(key, defaultValue)`
+
+Returns the value associated with the key. If the key does not exist within the map, the default value is set as the value within the map, the key is added to the dirty set, and the default value is returned.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+// map.get('a') === undefined
+// map.isKeyDirty('a') === false
+
+map.getOrInsert('a', 1)
+
+// map.get('a') === 1
+// map.isKeyDirty('a') === true
+```
+
+### `getOrInsertComputed(key, valueGenerator)`
+
+Returns the value associated with the key. If the key does not exist within the map, the value generator function is called and result set as the value within the map, the key is added to the dirty set, and the generated value is returned. The key is passed to the value generator when invoked.
+
+```js
+import DirtyMap from './path/to/DirtyMap.js'
+
+const map = new DirtyMap()
+
+// map.get('abc') === undefined
+// map.isKeyDirty('abc') === false
+
+map.getOrInsertComputed('abc', (key) => {
+	return key.length
+})
+
+// map.get('abc') === 3
+// map.isKeyDirty('abc') === true
 ```
 
 ### `isDirty()`

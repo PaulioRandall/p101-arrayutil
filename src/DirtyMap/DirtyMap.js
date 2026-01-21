@@ -42,6 +42,29 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
+	getOrInsert(k, defaultValue) {
+		if (this.has(k)) {
+			return this.get(k)
+		}
+
+		super.set(k, defaultValue)
+		this._dirty.add(k)
+
+		return defaultValue
+	}
+
+	getOrInsertComputed(k, valueGenerator) {
+		if (this.has(k)) {
+			return this.get(k)
+		}
+
+		const v = valueGenerator(k)
+		super.set(k, v)
+		this._dirty.add(k)
+
+		return v
+	}
+
 	isDirty() {
 		return this._dirty.size > 0
 	}

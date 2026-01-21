@@ -18,6 +18,41 @@ describe('DirtyMap.js', () => {
 		expect(m.isKeyDirty('a')).toEqual(true)
 	})
 
+	test('getOrInsert(k, defaultValue)', () => {
+		const m = new DirtyMap()
+
+		let v = m.getOrInsert('a', 1)
+
+		expect(v).toEqual(1)
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(true)
+
+		m.clean()
+		v = m.getOrInsert('a', 2)
+
+		expect(v).toEqual(1)
+		expect(m.get('a')).toEqual(1)
+		expect(m.isKeyDirty('a')).toEqual(false)
+	})
+
+	test('getOrInsertComputed(k, valueGenerator)', () => {
+		const m = new DirtyMap()
+		const genValue = (key) => key.length
+
+		let v = m.getOrInsertComputed('abc', genValue)
+
+		expect(v).toEqual(3)
+		expect(m.get('abc')).toEqual(3)
+		expect(m.isKeyDirty('abc')).toEqual(true)
+
+		m.clean()
+		v = m.getOrInsertComputed('abc', genValue)
+
+		expect(v).toEqual(3)
+		expect(m.get('abc')).toEqual(3)
+		expect(m.isKeyDirty('abc')).toEqual(false)
+	})
+
 	test('put(k,v): New entry causes key to become dirty', () => {
 		const m = new DirtyMap()
 		const result = m.put('a', 1)
