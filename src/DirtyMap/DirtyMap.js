@@ -2,15 +2,11 @@ function err(msg) {
 	return new Error(`[DirtyMap] ${msg}`)
 }
 
-function defaultEquals(a, b) {
+function strictEquals(a, b) {
 	return a === b
 }
 
-function checkCmpFunc(f, skipIfUndefined = false) {
-	if (skipIfUndefined && f === undefined) {
-		return
-	}
-
+function checkCmpFunc(f) {
 	if (!f || typeof f !== 'function') {
 		throw err(`Compare function must be a function, not a '${typeof f}'`)
 	}
@@ -18,7 +14,6 @@ function checkCmpFunc(f, skipIfUndefined = false) {
 
 export default class DirtyMap extends Map {
 	_dirty = new Set()
-	_equals = defaultEquals
 
 	get dirty() {
 		return this._dirty
@@ -47,12 +42,6 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	equalsIf(f) {
-		checkCmpFunc(f)
-		this._equals = f
-		return this
-	}
-
 	isDirty() {
 		return this._dirty.size > 0
 	}
@@ -61,14 +50,14 @@ export default class DirtyMap extends Map {
 		return this._dirty.has(k)
 	}
 
-	put(k, v, f) {
-		checkCmpFunc(f, true)
+	put(k, v, f = strictEquals) {
+		checkCmpFunc(f)
 		this._put(k, v, f)
 		return this
 	}
 
-	putAll(obj, f) {
-		checkCmpFunc(f, true)
+	putAll(obj, f = strictEquals) {
+		checkCmpFunc(f)
 		const keys = Object.getOwnPropertyNames(obj)
 
 		for (const k of keys) {
@@ -78,8 +67,8 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	putMissing(k, v, f) {
-		checkCmpFunc(f, true)
+	putMissing(k, v, f = strictEquals) {
+		checkCmpFunc(f)
 
 		if (!this.has(k)) {
 			this._put(k, v, f)
@@ -103,8 +92,8 @@ export default class DirtyMap extends Map {
 		return this
 	}
 
-	willPutDirty(k, v, f) {
-		checkCmpFunc(f, true)
+	willPutDirty(k, v, f = strictEquals) {
+		checkCmpFunc(f)
 
 		return (
 			this._dirty[k] || //

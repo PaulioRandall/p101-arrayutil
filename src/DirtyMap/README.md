@@ -24,7 +24,6 @@ All new and overidden values and functions are listed. Use standard builtin [Map
 - [`clean()`](#clean)
 - [`clear()`](#clear)
 - [`delete(key)`](#deletekey)
-- [`equalsIf(compareFunction)`](#equalsifcompareFunction)
 - [`isDirty()`](#isDirty)
 - [`isKeyDirty(key)`](#isKeyDirtykey)
 - [`put(key, value, compareFunction)`](#putkey-value-compareFunction)
@@ -106,30 +105,6 @@ map.delete('a')
 map.clean()
 map.delete('a')
 // map.isKeyDirty('a') === false
-```
-
-### `equalsIf(compareFunction)`
-
-Sets the default function that tests for equality. For some functions that mutate the map, this determines whether a key will become dirty as a result of the operation. Returns the DirtyMap instance.
-
-By default, a strict equality (triple equals) is used.
-
-```js
-import DirtyMap from './path/to/DirtyMap.js'
-
-const map = new DirtyMap()
-
-// By default, strict equality is used (===).
-// Overriding with loose equality so strings are
-// implicitly converted to numbers for comparison.
-map.equalsIf((a, b) => a == b)
-
-map.put('a', 1)
-map.put('a', '1')
-
-// map['a'] === 'VALUE'
-// Value will not changed and key will not be dirty
-// (because the put function was used).
 ```
 
 ### `isDirty()`
