@@ -1,75 +1,51 @@
-import DirtyMap from '../DirtyMap/DirtyMap.js'
-
 function err(msg) {
 	return new Error(`[Elemental] ${msg}`)
+}
+
+function checkElement(elem) {
+	if (!(elem instanceof Element)) {
+		throw err(`Not an Element, was given '${typeof elem}'`)
+	}
 }
 
 function formatAttrValueFromMap(map) {
 	const values = []
 
 	for (const [k, v] of map.entries()) {
-		v = Array.isArray(v) ? v.join(' ') : v
-		values.push(`${k}(${v})`)
+		const strVal = Array.isArray(v) ? v.join(' ') : v
+		values.push(`${k}(${strVal})`)
 	}
 
 	return values.join(' ')
 }
 
-function setOrDeleteDirtyMapEntry(map, k, v) {
+function setOrDeleteMapEntry(map, k, v) {
 	if (v === undefined) {
 		map.delete(k)
 	} else {
-		map.put(k, v)
+		map.set(k, v)
 	}
 }
 
 export default class Elemental {
-	_element = null
-	_transforms = new DirtyMap()
-
-	constructor(element) {
-		this._element = element
-	}
-
-	get element() {
-		return this._element
-	}
-
-	setElement(v) {
-		if (!(v instanceof Element)) {
-			throw err(`Not an Element, was given '${typeof Element}'`)
-		}
-
-		this._element = v
-		return this
-	}
+	_transforms = new Map()
 
 	transform(k, v = undefined) {
-		setOrDeleteDirtyMapEntry(this._transforms, k, v)
+		setOrDeleteMapEntry(this._transforms, k, v)
 		return this
 	}
 
-	isDirty() {
-		return this._transforms.isDirty()
-	}
+	applyTo(elem) {
+		checkElement(elem)
 
-	update() {
-		if (!this._element) {
-			return this
-		}
+		this._applyTransforms(elem)
 
-		this._updateTransforms()
 		return this
 	}
 
-	_updateTransforms() {
-		if (!this._transforms.isDirty()) {
-			return
-		}
-
-		this._transforms.clean()
+	_applyTransforms(elem) {
 		const value = formatAttrValueFromMap(this._transforms)
-		this._element.style.transform = value
+		elem.style.transform = value
 	}
 }
 

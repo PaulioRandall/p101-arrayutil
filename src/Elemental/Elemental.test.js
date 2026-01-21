@@ -1,19 +1,20 @@
 import Elemental from './Elemental.js'
-import './AutoElemental.js'
 
 describe('Elemental.js', () => {
-	test('setElement(elem): Happy path', () => {
+	test('applyTo(elem): Happy path', () => {
 		const etal = new Elemental()
 
-		const elem = document.createElement('div')
-		etal.setElement(elem)
+		etal.transform('rotate', '45deg')
 
-		expect(etal.element).toEqual(elem)
+		const div = document.createElement('div')
+		etal.applyTo(div)
+
+		expect(div.style.transform).toEqual('rotate(45deg)')
 	})
 
-	test('setElement(elem): Throws error if non-Element passed', () => {
+	test('applyTo(elem): Throws error when not an element', () => {
 		const etal = new Elemental()
-		const f = () => etal.setElement('not an element')
+		const f = () => etal.applyTo('')
 		expect(f).toThrow(Error)
 	})
 
