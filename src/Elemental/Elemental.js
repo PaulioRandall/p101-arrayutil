@@ -1,213 +1,96 @@
+import ElementConfig from './ElementConfig'
+
 function err(msg) {
 	return new Error(`[Elemental] ${msg}`)
 }
 
 function checkElement(elem) {
+	if (elem === null) {
+		return
+	}
+
 	if (!(elem instanceof Element)) {
 		throw err(`Not an Element, was given '${typeof elem}'`)
 	}
 }
 
-function formatAttrValue(v) {
-	return Array.isArray(v) ? v.join(' ') : v
-}
+export default class Elemental extends ElementConfig {
+	_autoUpdate = false
+	_element = null
 
-function setOrDeleteMapEntry(map, k, v) {
-	if (v === undefined) {
-		map.delete(k)
-	} else {
-		map.set(k, v)
+	constructor(elem = null, autoUpdate = false) {
+		super()
+
+		this.setElement(elem)
+		this.enableAutoUpdate(autoUpdate)
 	}
-}
 
-export default class Elemental {
-	_attributes = new Map()
-	_styles = new Map()
-	_transforms = new Map()
+	get autoUpdate() {
+		return this._autoUpdate
+	}
 
-	applyTo(elem) {
-		checkElement(elem)
-
-		this._applyAttributes(elem)
-		this._applyStyles(elem)
-		this._applyTransforms(elem)
-
-		return this
+	get element() {
+		return this._element
 	}
 
 	attr(...args) {
-		return attribute(...args)
-	}
-
-	attribute(k, v = undefined) {
-		setOrDeleteMapEntry(this._attributes, k, v)
+		super.attribute(...args)
+		this._tryAutoUpdate()
 		return this
 	}
 
-	style(k, v = undefined) {
-		setOrDeleteMapEntry(this._styles, k, v)
+	attribute(...args) {
+		super.attribute(...args)
+		this._tryAutoUpdate()
+		return this
+	}
+
+	enableAutoUpdate(v = true) {
+		if (typeof v !== 'boolean') {
+			throw err(`Boolean required, instead got '${typeof v}'`)
+		}
+
+		this._autoUpdate = v
+		return this
+	}
+
+	setElement(elem) {
+		checkElement(elem)
+		this._element = elem
+		this._tryAutoUpdate()
+		return this
+	}
+
+	style(...args) {
+		super.style(...args)
+		this._tryAutoUpdate()
 		return this
 	}
 
 	trans(...args) {
-		return trans(...args)
-	}
-
-	transform(k, v = undefined) {
-		setOrDeleteMapEntry(this._transforms, k, v)
+		super.transform(...args)
+		this._tryAutoUpdate()
 		return this
 	}
 
-	_applyAttributes(elem) {
-		for (const [k, v] of this._attributes.entries()) {
-			const value = formatAttrValue(v)
-			elem.setAttribute(k, value)
-		}
-
-		this._cleanUpAttributes(elem)
+	transform(...args) {
+		super.transform(...args)
+		this._tryAutoUpdate()
+		return this
 	}
 
-	_applyStyles(elem) {
-		for (const [k, v] of this._styles.entries()) {
-			const value = formatAttrValue(v)
-			elem.style[k] = value
-		}
-
-		this._cleanUpStyles(elem)
-	}
-
-	_applyTransforms(elem) {
-		const values = []
-
-		for (const [k, v] of this._transforms.entries()) {
-			const strVal = formatAttrValue(v)
-			values.push(`${k}(${strVal})`)
-		}
-
-		if (values.length > 0) {
-			elem.style.transform = values.join(' ')
-		} else {
-			delete elem.style.transform
-		}
-	}
-
-	_cleanUpAttributes(elem) {
-		const names = elem.getAttributeNames()
-		const attrKeys = Array.from(this._attributes.keys())
-
-		for (const name of names) {
-			if (name === 'style') {
-				continue
-			}
-
-			if (!attrKeys.includes(name)) {
-				elem.removeAttribute(name)
-			}
-		}
-	}
-
-	_cleanUpStyles(elem) {
-		const styleKeys = Array.from(this._styles.keys())
-
-		for (let i = 0; i < elem.style.length; i++) {
-			const key = elem.style.item(i)
-
-			if (key === 'transform') {
-				continue
-			}
-
-			if (!styleKeys.includes(key)) {
-				delete elem.style[key]
-			}
-		}
-	}
-}
-
-/*
-import { randomId } from './util.js'
-import Updateable from './Updateable.js'
-import DirtyMap from './DirtyMap.js'
-
-// Classes extending Elemental map to a single HTML
-// element.
-export default class Elemental extends Updateable {
-
-	updated() {
-		if (this._updating) {
-			// To prevent calls triggered by this function.
+	update() {
+		if (!this._element) {
 			return
 		}
 
-		try {
-			this._updating = true
+		this.applyTo(this._element)
+		return this
+	}
 
-			if (this.element) {
-				this._updateAttr()
-				this._updateStyle()
-				this._updateTransform()
-			}
-
-			super.updated()
-		} finally {
-			this._updating = false
+	_tryAutoUpdate() {
+		if (this._autoUpdate) {
+			this.update()
 		}
-	}
-
-	_setElement(element) {
-		this._element = element
-	}
-
-	_updateAttr() {
-		for (const name of this._attrs.listDirty()) {
-			const v = this._attrs.val(name)
-
-			if (v === undefined) {
-				this.element.removeAttribute(name)
-			} else {
-				this.element.setAttribute(name, v)
-			}
-		}
-
-		this._attrs.clean()
-	}
-
-	_updateStyle() {
-		if (this._styles.isDirty()) {
-			const style = this._styles
-				.map(([k, v]) => `${k}: ${v};`) //
-				.join('') //
-			this.element.setAttribute('style', style)
-		}
-
-		this._styles.clean()
-	}
-
-	_updateTransform() {
-		if (this._transforms.isDirty()) {
-			const transforms = this._transforms
-				.map(this._transformValueToString) //
-				.map(this._transformPairToString) //
-				.join('') //
-			this.element.setAttribute('transform', transforms)
-		}
-
-		this._transforms.clean()
-	}
-
-	_transformValueToString([k, v]) {
-		if (Array.isArray(v)) {
-			return [k, v.join(' ')]
-		}
-
-		return [k, v]
-	}
-
-	_transformPairToString([k, v]) {
-		return `${k}(${v})`
 	}
 }
-
-function randomId() {
-	return crypto.randomUUID().slice(24)
-}
-*/

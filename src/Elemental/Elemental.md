@@ -1,8 +1,6 @@
 # Class: Elemental
 
-> TODO: Summary description.
-
-> TODO: Change name to `ElementConfig` or something that indicates a utility class that makes applying attributes, styles, and transforms simplier.
+Provides a simplified way to provide apply changes to a specific element. When auto update is disabled, allows batching of changes to the element.
 
 ## API
 
@@ -10,123 +8,94 @@
 import Elemental from './path/to/Elemental.js'
 ```
 
+> TODO: `dispatch`, `on`, `off` functions.
+
+**Instance Values**
+
+- [`autoUpdate`](#autoUpdate)
+- [`element`](#element)
+
 **Instance Methods**
 
-- [`applyTo(element)`](#applyToelement)
-- [`attr(key, value)`](#attrkey-value)
-- [`attribute(key, value)`](#attributekey-value)
-- [`style(key, value)`](#stylekey-value)
-- [`trans(key, value)`](#transkey-value)
-- [`transform(key, value)`](#transformkey-value)
+Methods inherited from [ElementConfig](./ElementConfig.md) are not documented here. They have been decorated to support auto updating.
 
-### `applyTo(element)`
+- [`enableAutoUpdate(bool)`](#enableAutoUpdatebool)
+- [`setElement(element)`](#setElementelement)
+- [`update()`](#update)
 
-Applies the configuration to the passed element. Throws an error if the passed value is not an instance of [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element). Returns the Elemental instance for chaining.
+### `autoUpdate`
+
+Gets the currently auto update state. Always a boolean.
 
 ```js
 import Elemental from './path/to/Elemental.js'
 
-const etal = new Elemental()
+const elem = new Elemental()
+
+let isAutoUpdateSet = elem.autoUpdate
+// isAutoUpdateSet === false
+
+elem.enableAutoUpdate()
+
+isAutoUpdateSet = elem.autoUpdate
+// isAutoUpdateSet === true
+```
+
+### `element`
+
+Gets the currently set element. It may be null.
+
+```js
+import Elemental from './path/to/Elemental.js'
+
+const elem = new Elemental()
 const div = document.createElement('div')
 
-etal.transform('rotate', '45deg')
-etal.applyTo(div)
+const elem = elem.element
+// elem === HTMLELement{ type: 'div' }
 ```
 
-### `attr(key, value)`
+### `enableAutoUpdate(bool)`
 
-Alias for `attribute(key, value)`.
+Enable or disables auto update on change. This means changes to attributes, styles, and transform configuration will synchronously be applied to the set element, if one is set.
 
-### `attribute(key, value)`
-
-If the value is not undefined, adds the attribute to the map of attributes. If value is undefined or omitted then deletes any existing entry instead. Returns the Elemental instance for chaining.
+Without a parameter, always enables. Passed parameter must be a boolean else an error is thrown.
 
 ```js
 import Elemental from './path/to/Elemental.js'
 
-const etal = new Elemental()
+const div = document.createElement('div')
+const elem = new Elemental(div)
 
-etal.attribute('width', '120px')
-etal.attribute('class', 'centered button-style')
-
-// Array items are joined with a space during element application.
-etal.attribute('class', ['centered', 'button-style'])
+elem.enableAutoUpdate(true)
 ```
 
-**Delete Attribute**
+### `setElement(element)`
+
+Sets the underlying element being adapted. Must be an instance or sub class of [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) else an error is thrown.
 
 ```js
 import Elemental from './path/to/Elemental.js'
 
-const etal = new Elemental()
+const elem = new Elemental()
+const div = document.createElement('div')
 
-etal.attribute('width', '120px')
-
-// Either of these will delete the attribute.
-etal.attribute('width')
-etal.attribute('width', undefined)
+elem.setElement(div)
 ```
 
-### `style(key, value)`
+### `update()`
 
-If the value is not undefined, adds the style to the map of styles. If value is undefined or omitted then deletes any existing entry instead. Returns the Elemental instance for chaining.
+Applies the configuration to the set element. Does nothing if no element currently set.
 
 ```js
 import Elemental from './path/to/Elemental.js'
 
-const etal = new Elemental()
+const div = document.createElement('div')
+const elem = new Elemental(div)
 
-etal.style('color', 'green')
-etal.style('border', '1px solid black')
+elem.attribute('width', '120px')
+elem.style('border', ['1px', 'solid', 'black'])
+elem.transform('rotate', '45deg')
 
-// Array items are joined with a space during element application.
-etal.style('border', ['1px', 'solid', 'black'])
-```
-
-**Delete Style**
-
-```js
-import Elemental from './path/to/Elemental.js'
-
-const etal = new Elemental()
-
-etal.style('color', 'green')
-
-// Either of these will delete the style.
-etal.style('color')
-etal.style('color', undefined)
-```
-
-### `trans(key, value)`
-
-Alias for `transform(key, value)`.
-
-### `transform(key, value)`
-
-If the value is not undefined, adds the transformation to the map of transforms. If value is undefined or omitted then deletes any existing entry instead. Returns the Elemental instance for chaining.
-
-```js
-import Elemental from './path/to/Elemental.js'
-
-const etal = new Elemental()
-
-etal.transform('rotate', '45deg')
-etal.transform('translate', '25px 50px')
-
-// Array items are joined with a space during element application.
-etal.transform('translate', ['25px', '50px'])
-```
-
-**Delete Transformation**
-
-```js
-import Elemental from './path/to/Elemental.js'
-
-const etal = new Elemental()
-
-etal.transform('rotate', '45deg')
-
-// Either of these will delete the transformation.
-etal.transform('rotate')
-etal.transform('rotate', undefined)
+elem.update()
 ```
