@@ -1,6 +1,6 @@
 # Class: Elemental
 
-Provides a simplified way to provide apply changes to a specific element. When auto update is disabled, allows batching of changes to the element.
+Provides a simplified way to apply changes to a specific element. When auto update is disabled, allows batching of changes to the element.
 
 ## API
 
