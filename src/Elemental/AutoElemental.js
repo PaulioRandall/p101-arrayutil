@@ -1,7 +1,5 @@
 import Elemental from './Elemental.js'
 
-// TODO: This could accept a set of elements??
-
 function removeFromArray(array, item) {
 	const i = array.indexOf(item)
 
@@ -32,10 +30,24 @@ export default class AutoElemental extends Elemental {
 		return this
 	}
 
+	attr(...args) {
+		this.attribute(...args)
+	}
+
+	attribute(...args) {
+		super.attribute(...args)
+		this._update()
+		return this
+	}
+
 	style(...args) {
 		super.style(...args)
 		this._update()
 		return this
+	}
+
+	trans(...args) {
+		this.transform(...args)
 	}
 
 	transform(...args) {
@@ -53,8 +65,6 @@ export default class AutoElemental extends Elemental {
 	}
 
 	_update() {
-		if (this._element) {
-			this.applyTo(this._element)
-		}
+		this._elements.forEach(this.applyTo)
 	}
 }

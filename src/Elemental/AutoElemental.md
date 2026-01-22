@@ -2,6 +2,14 @@
 
 > TODO: Summary description.
 
+> TODO: Revert to only having one element.
+
+> TODO: Change name to `Elemental` once the current elemental class has had its name changed.
+
+> TODO: Add pause and resume auto-update functionality.
+
+> TODO: Create `Moonfire` package.
+
 ## API
 
 ```js
@@ -16,8 +24,11 @@ Only overridden methods are specified here.
 
 **Instance Methods**
 
+- [`attr(key, value)`](#attrkey-value)
+- [`attribute(key, value)`](#attributekey-value)
 - [`setElement(element)`](#setElementelement)
 - [`style(key, value)`](#stylekey-value)
+- [`trans(key, value)`](#transkey-value)
 - [`transform(key, value)`](#transformkey-value)
 
 ### `element`
@@ -34,6 +45,14 @@ const gotElement = autoElem.element
 // gotElement === HTMLElement of type 'div'
 ```
 
+### `attr(key, value)`
+
+Alias for `attribute(key, value)`.
+
+### `attribute(key, value)`
+
+Overides to call the applyTo function, with the set element, after setting the attribute. Does nothing if no element set.
+
 ### `setElement(element)`
 
 Sets the underlying element being adapted. Must be an instance or sub class of [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element), else an error is thrown.
@@ -49,8 +68,12 @@ etal.setElement(elem)
 
 ### `style(key, value)`
 
-Overides to call the applyTo function, with the set element, after setting a style. Does nothing if no element set.
+Overides to call the applyTo function, with the set element, after setting the style. Does nothing if no element set.
+
+### `trans(key, value)`
+
+Alias for `transform(key, value)`.
 
 ### `transform(key, value)`
 
-Overides to call the applyTo function, with the set element, after setting a transformation. Does nothing if no element set.
+Overides to call the applyTo function, with the set element, after setting the transformation. Does nothing if no element set.

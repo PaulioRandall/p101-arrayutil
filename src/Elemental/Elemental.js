@@ -21,15 +21,26 @@ function setOrDeleteMapEntry(map, k, v) {
 }
 
 export default class Elemental {
+	_attributes = new Map()
 	_styles = new Map()
 	_transforms = new Map()
 
 	applyTo(elem) {
 		checkElement(elem)
 
+		this._applyAttributes(elem)
 		this._applyStyles(elem)
 		this._applyTransforms(elem)
 
+		return this
+	}
+
+	attr(...args) {
+		return attribute(...args)
+	}
+
+	attribute(k, v = undefined) {
+		setOrDeleteMapEntry(this._attributes, k, v)
 		return this
 	}
 
@@ -38,9 +49,22 @@ export default class Elemental {
 		return this
 	}
 
+	trans(...args) {
+		return trans(...args)
+	}
+
 	transform(k, v = undefined) {
 		setOrDeleteMapEntry(this._transforms, k, v)
 		return this
+	}
+
+	_applyAttributes(elem) {
+		for (const [k, v] of this._attributes.entries()) {
+			const value = formatAttrValue(v)
+			elem.setAttribute(k, value)
+		}
+
+		this._cleanUpAttributes(elem)
 	}
 
 	_applyStyles(elem) {
@@ -48,6 +72,8 @@ export default class Elemental {
 			const value = formatAttrValue(v)
 			elem.style[k] = value
 		}
+
+		this._cleanUpStyles(elem)
 	}
 
 	_applyTransforms(elem) {
@@ -58,7 +84,42 @@ export default class Elemental {
 			values.push(`${k}(${strVal})`)
 		}
 
-		elem.style.transform = values.join(' ')
+		if (values.length > 0) {
+			elem.style.transform = values.join(' ')
+		} else {
+			delete elem.style.transform
+		}
+	}
+
+	_cleanUpAttributes(elem) {
+		const names = elem.getAttributeNames()
+		const attrKeys = Array.from(this._attributes.keys())
+
+		for (const name of names) {
+			if (name === 'style') {
+				continue
+			}
+
+			if (!attrKeys.includes(name)) {
+				elem.removeAttribute(name)
+			}
+		}
+	}
+
+	_cleanUpStyles(elem) {
+		const styleKeys = Array.from(this._styles.keys())
+
+		for (let i = 0; i < elem.style.length; i++) {
+			const key = elem.style.item(i)
+
+			if (key === 'transform') {
+				continue
+			}
+
+			if (!styleKeys.includes(key)) {
+				delete elem.style[key]
+			}
+		}
 	}
 }
 
@@ -70,151 +131,6 @@ import DirtyMap from './DirtyMap.js'
 // Classes extending Elemental map to a single HTML
 // element.
 export default class Elemental extends Updateable {
-	_element = null
-	_attrs = new DirtyMap()
-	_styles = new DirtyMap()
-	_transforms = new DirtyMap()
-	_updating = false
-	_eventors = []
-
-	constructor() {
-		super()
-
-		this._attrs.set('id', randomId())
-		this._attrs.onUpdate(this.notifier)
-		this._styles.onUpdate(this.notifier)
-		this._transforms.onUpdate(this.notifier)
-	}
-
-	get svg() {
-		return this._svg
-	}
-
-	get element() {
-		return this._element
-	}
-
-	get dirty() {
-		return this._attrs.dirty || this._styles.dirty || this._transforms.dirty
-	}
-
-	_setSVG(svg) {
-		this._svg = svg
-	}
-
-	// Get or sets an element attribute. If value is
-	// undefined, then gets the value, else sets the
-	// attribute.
-	attr(name, value = undefined) {
-		if (value === undefined) {
-			return this._attrs.get(name)
-		}
-		this._attrs.put(name, value)
-		return this
-	}
-
-	// Sets all own properties in the object as element
-	// attributes.
-	attrs(obj = {}) {
-		this._attrs.putProps(obj)
-		return this
-	}
-
-	// Get or sets an element style. If value is undefined,
-	// then gets the style, else sets the style.
-	style(name, value = undefined) {
-		if (value === undefined) {
-			return this._styles.get(name)
-		}
-		this._styles.put(name, value)
-		return this
-	}
-
-	// Sets all own properties in the object as element
-	// styles.
-	styles(obj = {}) {
-		this._styles.putProps(obj)
-		return this
-	}
-
-	// Get or sets an SVG element transform. If value is
-	// undefined, then gets the transform, else sets the
-	// transform.
-	transform(name, value = undefined) {
-		if (value === undefined) {
-			return this._transforms.get(name)
-		}
-		this._transforms.put(name, value)
-		return this
-	}
-
-	// Sets all own properties in the object as SVG element
-	// transforms.
-	transforms(obj = {}) {
-		this._transforms.putProps(obj)
-		return this
-	}
-
-	// Shortcut for adding itself to a group.
-	addTo(group) {
-		group.add(this)
-		return this
-	}
-
-	dispatch(type, detail = {}) {
-		const event = new CustomEvent(type, {
-			bubbles: false,
-			cancelable: false,
-			detail,
-		})
-
-		return this.element.dispatchEvent(event)
-	}
-
-	on(eventType, func) {
-		this.element.addEventListener(eventType, func)
-		return () => this.off(eventType, func)
-	}
-
-	off(eventType, func) {
-		this.element.removeEventListener(eventType, func)
-	}
-
-	callOn(func) {
-		const eventor = this._eventors.find((e) => {
-			return e.func === func
-		})
-
-		if (!eventor) {
-			throw new Error(`Unable to call on: Unknown eventor`)
-		}
-
-		if (eventor.unlisten) {
-			return // Already listening
-		}
-
-		const target = eventor.svg ? this._svg : this
-
-		eventor.unlisten = target.on(
-			eventor.eventType, //
-			eventor.callback
-		)
-	}
-
-	callOff(func) {
-		const eventor = this._eventors.find((e) => {
-			return e.func === func
-		})
-
-		if (!eventor) {
-			throw new Error(`Unable to call off: Unknown eventor`)
-		}
-
-		if (eventor.unlisten) {
-			eventor.unlisten()
-			eventor.unlisten = null
-		}
-	}
 
 	updated() {
 		if (this._updating) {
