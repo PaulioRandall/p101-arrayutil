@@ -1,11 +1,5 @@
-// Invoke the specified function.
-//
-// If capture is true, the object's protoype implementation
-// is invoked first and the root extended implementation is
-// called last. This mimics the behaviour of Event's
-// capture-bubble API and mechanics.
 export function invoke(obj, criteria, capture = false) {
-	const funcs = match(obj, criteria)
+	const funcs = functions(obj, criteria)
 
 	if (!capture) {
 		funcs.reverse()
@@ -18,15 +12,15 @@ export function invoke(obj, criteria, capture = false) {
 }
 
 // Find all own functions, from all prototypes of obj, that
-// match the criteria. Criteria may be a string or regex.
-export function match(obj, criteria) {
-	return listPrototypes(obj) //
+// find the criteria. Criteria may be a string or regex.
+export function functions(obj, criteria) {
+	return prototypes(obj) //
 		.map((proto) => matchOwnFuncs(proto, criteria, obj)) //
 		.flat() //
 }
 
 // Lists the prototype chain for a specified object.
-export function listPrototypes(obj) {
+export function prototypes(obj) {
 	const result = []
 	let proto = Object.getPrototypeOf(obj)
 
@@ -67,7 +61,7 @@ function matchOwnFuncNames(proto, criteria) {
 }
 
 export default {
-	listPrototypes,
-	match,
+	functions,
+	prototypes,
 	invoke,
 }

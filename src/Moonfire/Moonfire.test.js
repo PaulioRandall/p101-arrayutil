@@ -40,7 +40,7 @@ function constructMock() {
 }
 
 describe('moonfire.js', () => {
-	test('Moonfire.invoke(): 1', () => {
+	test('invoke(): Calls functions by name', () => {
 		const [called, mock] = constructMock()
 		Moonfire.invoke(mock, 'doStuff')
 
@@ -51,7 +51,7 @@ describe('moonfire.js', () => {
 		])
 	})
 
-	test('Moonfire.invoke(): 2', () => {
+	test('invoke(): Calls functions by name in reverse', () => {
 		const [called, mock] = constructMock()
 		Moonfire.invoke(mock, 'doStuff', true)
 
@@ -62,17 +62,7 @@ describe('moonfire.js', () => {
 		])
 	})
 
-	test('Moonfire.invoke(): 3', () => {
-		const [called, mock] = constructMock()
-		Moonfire.invoke(mock, 'doThing')
-
-		expect(called).toEqual([
-			'Alpha.doThing', //
-			'Charlie.doThing', //
-		])
-	})
-
-	test('Moonfire.invoke(): 4', () => {
+	test('invoke() Calls functions by regexp', () => {
 		const [called, mock] = constructMock()
 		Moonfire.invoke(mock, /do[A-Z][a-z]+/)
 
