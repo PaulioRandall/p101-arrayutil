@@ -44,10 +44,11 @@ describe('moonfire.js', () => {
 		const [called, mock] = constructMock()
 		Moonfire.invoke(mock, 'doStuff')
 
+		// Reverse order of execution.
 		expect(called).toEqual([
-			'Alpha.doStuff', //
-			'Beta.doStuff', //
 			'Charlie.doStuff', //
+			'Beta.doStuff',
+			'Alpha.doStuff',
 		])
 	})
 
@@ -55,10 +56,11 @@ describe('moonfire.js', () => {
 		const [called, mock] = constructMock()
 		Moonfire.invoke(mock, 'doStuff', true)
 
+		// Reverse order of execution.
 		expect(called).toEqual([
-			'Charlie.doStuff', //
-			'Beta.doStuff', //
 			'Alpha.doStuff', //
+			'Beta.doStuff',
+			'Charlie.doStuff',
 		])
 	})
 
@@ -66,12 +68,13 @@ describe('moonfire.js', () => {
 		const [called, mock] = constructMock()
 		Moonfire.invoke(mock, /do[A-Z][a-z]+/)
 
+		// Reverse order of execution.
 		expect(called).toEqual([
-			'Alpha.doStuff', //
-			'Alpha.doThing', //
-			'Beta.doStuff', //
-			'Charlie.doStuff', //
 			'Charlie.doThing', //
+			'Charlie.doStuff',
+			'Beta.doStuff',
+			'Alpha.doThing',
+			'Alpha.doStuff',
 		])
 	})
 })

@@ -1,25 +1,21 @@
-export function invoke(obj, criteria, capture = false) {
+export function invoke(obj, criteria, startFromBack = false) {
 	const funcs = functions(obj, criteria)
 
-	if (!capture) {
+	if (startFromBack) {
 		funcs.reverse()
 	}
 
 	for (const { func, context } of funcs) {
-		// Always calling with the original object as 'this'.
 		func.call(context)
 	}
 }
 
-// Find all own functions, from all prototypes of obj, that
-// find the criteria. Criteria may be a string or regex.
 export function functions(obj, criteria) {
 	return prototypes(obj) //
 		.map((proto) => matchOwnFuncs(proto, criteria, obj)) //
 		.flat() //
 }
 
-// Lists the prototype chain for a specified object.
 export function prototypes(obj) {
 	const result = []
 	let proto = Object.getPrototypeOf(obj)
