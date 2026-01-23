@@ -45,6 +45,17 @@ export default class Elemental extends ElementConfig {
 		return this
 	}
 
+	dispatch(eventType, detail = null, options = {}) {
+		if (!this._element) {
+			return this
+		}
+
+		options.detail = detail !== null ? detail : options.detail
+
+		const event = new CustomEvent(eventType, options)
+		this._element.dispatchEvent(event)
+	}
+
 	enableAutoUpdate(v = true) {
 		if (typeof v !== 'boolean') {
 			throw err(`Boolean required, instead got '${typeof v}'`)
@@ -52,6 +63,27 @@ export default class Elemental extends ElementConfig {
 
 		this._autoUpdate = v
 		return this
+	}
+
+	off(eventType, listener, options) {
+		const elem = this._element
+
+		if (elem) {
+			elem.removeEventListener(eventType, listener, options)
+		}
+
+		return this
+	}
+
+	on(eventType, listener, options) {
+		const elem = this._element
+
+		if (!elem) {
+			return null
+		}
+
+		elem.addEventListener(eventType, listener, options)
+		return () => elem.removeEventListener(eventType, listener, options)
 	}
 
 	setElement(elem) {

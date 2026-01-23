@@ -8,8 +8,6 @@ Provides a simplified way to apply changes to a specific element. When auto upda
 import Elemental from './path/to/Elemental.js'
 ```
 
-> TODO: `dispatch`, `on`, `off` functions.
-
 **Instance Values**
 
 - [`autoUpdate`](#autoUpdate)
@@ -58,7 +56,7 @@ const elem = elem.element
 // elem === HTMLELement{ type: 'div' }
 ```
 
-### `dispatch(eventType, detail)`
+### `dispatch(eventType, detail, options)`
 
 Dispatches an event on the element if an element is set, else does nothing. Returns the Elemental instance for method chaining.
 
@@ -73,6 +71,14 @@ elem.dispatch('scrolledintoview')
 elem.dispatch('scrolledintoview', {
 	// event.detail: put what ever you want here.
 	scrollDirection: 'down',
+})
+
+elem.dispatch('scrolledintoview', null, {
+	// Standard Event options. Detail option will be
+	// overwritten if argument is not null.
+	bubbles: false,
+	cancelable: false,
+	composed: false,
 })
 ```
 

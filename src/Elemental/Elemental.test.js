@@ -1,6 +1,21 @@
 import Elemental from './Elemental.js'
 
 describe('Elemental.js', () => {
+	test('dispatch()', () => {
+		const div = document.createElement('div')
+		const elem = new Elemental(div)
+
+		let receivedDetail = null
+		div.addEventListener('testing', (event) => {
+			receivedDetail = event.detail
+		})
+
+		elem.dispatch('testing', { abc: 123 })
+
+		expect(receivedDetail).not.toEqual(null)
+		expect(receivedDetail).toEqual({ abc: 123 })
+	})
+
 	test('enableAutoUpdate(): Sets auto update', () => {
 		const elem = new Elemental()
 
@@ -29,6 +44,35 @@ describe('Elemental.js', () => {
 		const elem = new Elemental()
 		const f = () => elem.enableAutoUpdate('not a bool')
 		expect(f).toThrow(Error)
+	})
+
+	test('on() & off()', () => {
+		const div = document.createElement('div')
+		const elem = new Elemental(div)
+
+		let receivedDetail = null
+		const listener = (event) => {
+			receivedDetail = event.detail
+		}
+
+		elem.on('testing', listener)
+		div.dispatchEvent(
+			new CustomEvent('testing', {
+				detail: { abc: 123 },
+			})
+		)
+
+		expect(receivedDetail).toEqual({ abc: 123 })
+
+		receivedDetail = null
+		elem.off('testing', listener)
+		div.dispatchEvent(
+			new CustomEvent('testing', {
+				detail: { abc: 123 },
+			})
+		)
+
+		expect(receivedDetail).toEqual(null)
 	})
 
 	test('setElement(): Happy path', () => {
