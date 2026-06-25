@@ -3,8 +3,7 @@
 	"description": "Paulio's personal JavaScript utility library",
 	"keywords": [
 		"javascript",
-		"utility",
-		"personal"
+		"utility"
 	],
 	"version": "0.1.0",
 	"author": "Paulio",
@@ -19,12 +18,12 @@
 	},
 	"scripts": {
 		"fmt": "prettier --log-level warn --write .",
-		"test": "npm run fmt && node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests --testPathPatterns ./src/",
-		"commit": "npm run test && cat ./ready-to-ship.txt"
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests --testPathPatterns ./src/",
+		"audit": "npm run fmt && npm run test && cat ./ready-to-integrate.txt"
 	},
 	"devDependencies": {
-		"jest": "30.2.0",
-		"jest-environment-jsdom": "30.2.0",
-		"prettier": "3.7.4"
+		"jest": "30.4.2",
+		"jest-environment-jsdom": "30.4.1",
+		"prettier": "3.8.4"
 	}
 }

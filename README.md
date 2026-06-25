@@ -1,4 +1,4 @@
-# JavaScript Util (P101)
+# P101: JavaScript Util
 
 Paulio's personal JavaScript utility library. It is a collection of packages, classes, and functions that are useful to me, in my projects, and for my style of development.
 
@@ -6,9 +6,7 @@ I try hard to keep things as isolated as possible to make copy+paste easier. Thi
 
 ## Usage
 
-1. Copy+paste packages, classes, and functions needed from _[/src](./src)_. Tests are written in [Jest](https://jestjs.io/) but should be easy to adapt to whatever you use.
-
-2. I may put on NPM at some point.
+Copy+paste packages, classes, and functions needed from _[/src](./src)_. Tests are written in [Jest](https://jestjs.io/) but should be easy to adapt to whatever you use.
 
 ## Packages
 
@@ -19,4 +17,4 @@ I try hard to keep things as isolated as possible to make copy+paste easier. Thi
 
 This stuff is usually stored as Gists. I've used maybe 1 or 2 of the Gists I've ever created. I forget they exist. I figured this could be a better way to store code snippets. Another problem with Gists is that I can't easily clone and run automated tests like I can here.
 
-At work, I occasionally pull in [Lodash](https://lodash.com/docs) as other JavaScript programmers are likely to be familiar with it. But only when I need a few non-trivial functions. It annoys me that I can't easily copy+paste from other libraries (with tests) in scenarios where I just want 1 or 2 trivial 5-10 line functions.
+At work, I occasionally pull in [Lodash](https://lodash.com/docs) as other JavaScript programmers are likely to be familiar with it. But only when I need a few non-trivial functions. It annoys me that I can't easily copy+paste from other libraries (with tests) in scenarios where I just want 1 or 2 trivial functions.
