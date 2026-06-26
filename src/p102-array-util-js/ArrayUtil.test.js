@@ -2,7 +2,7 @@
 
 import ArrayUtil from '@paulio/array-util-js'
 
-test("ArrayUtil", () => {
+test('ArrayUtil', () => {
 	const letters = ['A', 'B', 'C']
 	const act = ArrayUtil.last(letters)
 	expect(act).toEqual('C')
