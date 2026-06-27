@@ -6,4 +6,4 @@ I also use this repo to test published packages function when imported. A decade
 
 ## Made to be Plundered
 
-Copy+paste packages, classes, and functions as needed from _[/src](./src)_. Tests are written in [Jest](https://jestjs.io/) but should be easy to adapt to whatever you use.
+_Copy & paste_ packages, classes, functions, and tests as needed from _[/src](./src)_. Tests are written in [Jest](https://jestjs.io/) but should be easy to adapt to whatever you use.
