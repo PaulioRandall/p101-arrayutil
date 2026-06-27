@@ -22,9 +22,10 @@
 		"audit": "npm run fmt && npm run test && cat ./ready-to-integrate.txt"
 	},
 	"devDependencies": {
-		"@paulio/array-util-js": "0.1.0",
+		"@paulio/array-util-js": "0.1.1",
+		"@paulio/dirty-map-js": "0.1.0",
 		"jest": "30.4.2",
 		"jest-environment-jsdom": "30.4.1",
-		"prettier": "3.8.4"
+		"prettier": "3.9.0"
 	}
 }
